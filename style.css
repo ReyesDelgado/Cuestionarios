@@ -479,17 +479,14 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* Responsive */
+/* Responsive. Estilos para móviles (pantallas menores a 768px) */
 @media (max-width: 768px) {
-
-    .matrix-header-sticky,
-    .question-row {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 1.5rem;
-    }
-
-    .matrix-header-sticky {
-        display: none;
-    }
+  body {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .menu-navegacion {
+    flex-direction: column; /* El menú se vuelve vertical en móviles */
+  }
 }
