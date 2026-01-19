@@ -480,98 +480,81 @@ body {
 }
 
 /* --- OPTIMIZACIÓN RESPONSIVE --- */
-
-/* Elementos auxiliares ocultos en desktop */
-.mobile-label {
-    display: none;
-    font-size: 0.7rem;
-    font-weight: 800;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    text-align: center;
+/* --- COMPORTAMIENTO BASE (ESCRITORIO) --- */
+.responses-wrapper {
+    display: contents; /* Se comporta como si no existiera en desktop para respetar el grid del padre */
 }
 
+.mobile-only-label {
+    display: none; /* Oculto en PC */
+}
+
+/* --- REGLAS PARA MÓVIL (MENOS DE 768PX) --- */
 @media (max-width: 768px) {
-    /* Ajustes de tipografía general */
-    .survey-intro h1 { font-size: 1.8rem; }
-    .container { padding: 0 1rem; }
-
-    /* Ajuste de la sección de nombre */
-    .user-info-section {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1.5rem;
-        gap: 1rem;
+    /* Forzamos que la fila deje de ser un grid de 3 columnas */
+    .question-row, .matrix-header-sticky {
+        display: block !important; 
+        padding: 1.5rem 1rem !important;
     }
-    .user-info-section input { width: 100%; }
 
-    /* Ocultamos la cabecera sticky original en móvil porque ocupa mucho espacio */
+    /* La cabecera original (PREGUNTA | PASADO | AHORA) suele estorbar en móvil */
     .matrix-header-sticky {
-        display: none; 
-    }
-
-    /* Transformamos la fila de pregunta */
-    .question-row {
-        display: block; /* La pregunta arriba, respuestas abajo */
-        padding: 1.5rem 1rem;
+        display: none !important; 
     }
 
     .question-text {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         text-align: center;
     }
 
-    .category-title {
-        font-size: 1.1rem;
-    }
-
-    /* Contenedor de las dos columnas de respuesta */
-    .responses-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* Mantiene PASADO y AHORA al mismo nivel */
+    /* Este contenedor ahora tendrá las 2 columnas de respuestas a la par */
+    .responses-wrapper {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr; /* AQUÍ está la clave: dos columnas iguales */
         gap: 10px;
-        background: #f1f5f9;
+        background: #f8fafc;
         padding: 15px 5px;
-        border-radius: 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
     }
 
-    .mobile-label {
-        display: block; /* Mostramos PASADO/AHORA encima de cada grupo */
+    .mobile-only-label {
+        display: block;
+        font-size: 10px;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 8px;
+        color: var(--text-muted);
     }
 
-    .side-now .mobile-label {
-        color: var(--accent); /* Resaltamos el 'Ahora' */
+    .side-now .mobile-only-label {
+        color: var(--accent);
     }
 
-    /* Ajuste de los círculos Likert para que quepan 5 en línea en móvil */
+    /* Reducimos el tamaño de los círculos para que quepan 5 en el ancho del móvil */
     .likert-group {
-        padding: 0;
-        gap: 4px;
+        display: flex;
+        justify-content: space-around;
+        padding: 0 !important;
     }
 
     .likert-circle {
-        width: 28px;
-        height: 28px;
+        width: 26px !important;
+        height: 26px !important;
     }
 
     .likert-label {
-        font-size: 0.75rem;
+        font-size: 11px !important;
     }
 
-    /* Botón de envío */
-    .btn-xl {
+    /* Ajuste del contenedor de usuario */
+    .user-info-section {
+        flex-direction: column;
+        gap: 10px;
+        padding: 1.5rem;
+    }
+    
+    .user-info-section input {
         width: 100%;
-        justify-content: center;
-    }
-}
-
-/* Ajuste extra para móviles muy pequeños (iPhone SE, etc) */
-@media (max-width: 380px) {
-    .likert-circle {
-        width: 24px;
-        height: 24px;
-    }
-    .likert-label {
-        font-size: 0.65rem;
     }
 }
