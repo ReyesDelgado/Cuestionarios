@@ -103,452 +103,51 @@
                     </div>
 
                     <div class="matrix-header-sticky">
-
                         <div class="col-category">CATEGORÍA</div>
                         <div class="col-past">PASADO</div>
                         <div class="col-now">AHORA</div>
                     </div>
-                    <!-- ESTE CONTENEDOR ES CRÍTICO PARA EL ENVÍO -->
+
+                    <!-- ESTE CONTENEDOR ES DONDE SE RENDERIZAN LAS PREGUNTAS -->
                     <div id="questions-container">
-                        <!-- Categoría 1: Pregunta 1 -->
-                        <div class="question-row" data-id="q_pregunta1">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 1</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta1" value="1"
-                                            onchange="saveResponse('past_q_salud', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta1" value="2"
-                                            onchange="saveResponse('past_q_salud', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta1" value="3"
-                                            onchange="saveResponse('past_q_salud', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta1" value="4"
-                                            onchange="saveResponse('past_q_salud', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta1" value="5"
-                                            onchange="saveResponse('past_q_salud', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta1" value="1"
-                                            onchange="saveResponse('now_q_salud', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta1" value="2"
-                                            onchange="saveResponse('now_q_salud', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta1" value="3"
-                                            onchange="saveResponse('now_q_salud', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta1" value="4"
-                                            onchange="saveResponse('now_q_salud', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta1" value="5"
-                                            onchange="saveResponse('now_q_salud', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Las filas de preguntas se generan dinámicamente o se definen aquí -->
+                        <!-- Para mayor robustez, las definimos estáticamente sincronizadas con DEFAULT_QUESTIONS -->
 
-                        <!-- Categoría 2: Pregunta 2 -->
-                        <div class="question-row" data-id="q_pregunta2">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 2</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta2" value="1"
-                                            onchange="saveResponse('past_q_finanzas', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta2" value="2"
-                                            onchange="saveResponse('past_q_finanzas', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta2" value="3"
-                                            onchange="saveResponse('past_q_finanzas', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta2" value="4"
-                                            onchange="saveResponse('past_q_finanzas', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta2" value="5"
-                                            onchange="saveResponse('past_q_finanzas', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta2" value="1"
-                                            onchange="saveResponse('now_q_finanzas', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta2" value="2"
-                                            onchange="saveResponse('now_q_finanzas', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta2" value="3"
-                                            onchange="saveResponse('now_q_finanzas', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta2" value="4"
-                                            onchange="saveResponse('now_q_finanzas', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta2" value="5"
-                                            onchange="saveResponse('now_q_finanzas', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <script>
+                            // Función auxiliar para generar el HTML de una fila de Likert
+                            function generateLikertRow(id, title) {
+                                let html = `
+                                <div class="question-row" data-id="${id}">
+                                    <div class="question-text">
+                                        <span class="category-title">${title}</span>
+                                    </div>
+                                    <div class="side-past">
+                                        <div class="likert-group">`;
+                                for (let i = 1; i <= 5; i++) {
+                                    html += `
+                                            <label class="likert-option">
+                                                <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
+                                                <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                                            </label>`;
+                                }
+                                html += `</div></div><div class="side-now"><div class="likert-group">`;
+                                for (let i = 1; i <= 5; i++) {
+                                    html += `
+                                            <label class="likert-option">
+                                                <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
+                                                <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                                            </label>`;
+                                }
+                                html += `</div></div></div>`;
+                                return html;
+                            }
 
-                        <!-- Categoría 3: Pregunta 3 -->
-                        <div class="question-row" data-id="q_pregunta3">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 3</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta3" value="1"
-                                            onchange="saveResponse('past_q_profesional', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta3" value="2"
-                                            onchange="saveResponse('past_q_profesional', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta3" value="3"
-                                            onchange="saveResponse('past_q_profesional', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta3" value="4"
-                                            onchange="saveResponse('past_q_profesional', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta3" value="5"
-                                            onchange="saveResponse('past_q_profesional', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta3" value="1"
-                                            onchange="saveResponse('now_q_profesional', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta3" value="2"
-                                            onchange="saveResponse('now_q_profesional', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta3" value="3"
-                                            onchange="saveResponse('now_q_profesional', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta3" value="4"
-                                            onchange="saveResponse('now_q_profesional', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta3" value="5"
-                                            onchange="saveResponse('now_q_profesional', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Categoría 4: Pregunta 4 -->
-                        <div class="question-row" data-id="q_pregunta4">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 4</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta4" value="1"
-                                            onchange="saveResponse('past_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta4" value="2"
-                                            onchange="saveResponse('past_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta4" value="3"
-                                            onchange="saveResponse('past_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta4" value="4"
-                                            onchange="saveResponse('past_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta4" value="5"
-                                            onchange="saveResponse('past_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta4" value="1"
-                                            onchange="saveResponse('now_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta4" value="2"
-                                            onchange="saveResponse('now_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta4" value="3"
-                                            onchange="saveResponse('now_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta4" value="4"
-                                            onchange="saveResponse('now_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta4" value="5"
-                                            onchange="saveResponse('now_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Categoría 5: Pregunta 5 -->
-                        <div class="question-row" data-id="q_pregunta5">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 5</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta5" value="1"
-                                            onchange="saveResponse('past_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta5" value="2"
-                                            onchange="saveResponse('past_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta5" value="3"
-                                            onchange="saveResponse('past_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta5" value="4"
-                                            onchange="saveResponse('past_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta5" value="5"
-                                            onchange="saveResponse('past_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta5" value="1"
-                                            onchange="saveResponse('now_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta5" value="2"
-                                            onchange="saveResponse('now_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta5" value="3"
-                                            onchange="saveResponse('now_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta5" value="4"
-                                            onchange="saveResponse('now_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta5" value="5"
-                                            onchange="saveResponse('now_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Categoría 6: Pregunta 6 -->
-                        <div class="question-row" data-id="q_pregunta6">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 6</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta6" value="1"
-                                            onchange="saveResponse('past_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta6" value="2"
-                                            onchange="saveResponse('past_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta6" value="3"
-                                            onchange="saveResponse('past_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta6" value="4"
-                                            onchange="saveResponse('past_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta6" value="5"
-                                            onchange="saveResponse('past_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta6" value="1"
-                                            onchange="saveResponse('now_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta6" value="2"
-                                            onchange="saveResponse('now_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta6" value="3"
-                                            onchange="saveResponse('now_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta6" value="4"
-                                            onchange="saveResponse('now_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta6" value="5"
-                                            onchange="saveResponse('now_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Categoría 7: Pregunta 7 -->
-                        <div class="question-row" data-id="q_pregunta7">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 7</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta7" value="1"
-                                            onchange="saveResponse('past_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta7" value="2"
-                                            onchange="saveResponse('past_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta7" value="3"
-                                            onchange="saveResponse('past_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta7" value="4"
-                                            onchange="saveResponse('past_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta7" value="5"
-                                            onchange="saveResponse('past_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta7" value="1"
-                                            onchange="saveResponse('now_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta7" value="2"
-                                            onchange="saveResponse('now_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta7" value="3"
-                                            onchange="saveResponse('now_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta7" value="4"
-                                            onchange="saveResponse('now_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta7" value="5"
-                                            onchange="saveResponse('now_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Categoría 8: Pregunta 8 -->
-                        <div class="question-row" data-id="q_pregunta8">
-                            <div class="question-text">
-                                <span class="category-title">Pregunta 8</span>
-                            </div>
-                            <div class="side-past">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta8" value="1"
-                                            onchange="saveResponse('past_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta8" value="2"
-                                            onchange="saveResponse('past_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta8" value="3"
-                                            onchange="saveResponse('past_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta8" value="4"
-                                            onchange="saveResponse('past_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="past_q_pregunta8" value="5"
-                                            onchange="saveResponse('past_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="side-now">
-                                <div class="likert-group">
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta8" value="1"
-                                            onchange="saveResponse('now_q_social', 1)">
-                                        <div class="likert-circle"></div><span class="likert-label">1</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta8" value="2"
-                                            onchange="saveResponse('now_q_social', 2)">
-                                        <div class="likert-circle"></div><span class="likert-label">2</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta8" value="3"
-                                            onchange="saveResponse('now_q_social', 3)">
-                                        <div class="likert-circle"></div><span class="likert-label">3</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta8" value="4"
-                                            onchange="saveResponse('now_q_social', 4)">
-                                        <div class="likert-circle"></div><span class="likert-label">4</span>
-                                    </label>
-                                    <label class="likert-option"><input type="radio" name="now_q_pregunta8" value="5"
-                                            onchange="saveResponse('now_q_social', 5)">
-                                        <div class="likert-circle"></div><span class="likert-label">5</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                            // Escribimos las preguntas iniciales para que el DOM esté listo antes de que app.js actue
+                            document.write(
+                                DEFAULT_QUESTIONS.map(q => generateLikertRow(q.id, q.category)).join('')
+                            );
+                        </script>
+                    </div>
 
                     <div class="form-actions">
                         <button type="submit" id="submit-btn" class="btn btn-primary btn-xl">
@@ -572,7 +171,7 @@
     </div>
 
     <script src="app.js"></script>
-    <script>lucide.createIcons();</script>
+    <script>if (window.lucide) lucide.createIcons();</script>
 </body>
 
 </html>
