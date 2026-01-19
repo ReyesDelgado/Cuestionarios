@@ -55,39 +55,6 @@
 
         <!-- Main Content -->
         <main class="container">
-            <!-- Panel de Administración -->
-            <section id="admin-panel" class="section admin-panel hidden">
-                <div class="admin-card">
-                    <h2>Configuración del Cuestionario</h2>
-
-                    <div class="admin-setting-group">
-                        <label for="webhook-url">URL de Google Sheets (Apps Script):</label>
-                        <input type="text" id="webhook-url" placeholder="https://script.google.com/macros/s/.../exec"
-                            onchange="saveWebhookUrl(this.value)">
-                        <small>Pega aquí la URL de tu "Aplicación Web" de Google Apps Script.</small>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <p>Categorías y descripciones:</p>
-                    <div id="admin-questions-list" class="admin-list">
-                        <!-- Administrador de preguntas inyectado aquí -->
-                    </div>
-
-                    <div class="admin-actions">
-                        <button onclick="resetQuestions()" class="btn btn-secondary danger-text" title="Limpiar todo">
-                            <i data-lucide="trash-2"></i> Reiniciar
-                        </button>
-                        <button onclick="addQuestion()" class="btn btn-secondary">
-                            <i data-lucide="plus-circle"></i> Añadir Categoría
-                        </button>
-                        <button id="gen-link-btn" onclick="generateShareLink()" class="btn btn-primary">
-                            <i data-lucide="copy"></i> Generar Enlace
-                        </button>
-                    </div>
-                </div>
-            </section>
-
             <!-- Cuestionario Principal -->
             <section id="questionnaire" class="questionnaire-section fade-in">
                 <div class="survey-intro">
@@ -175,3 +142,4 @@
 </body>
 
 </html>
+
