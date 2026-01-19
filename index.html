@@ -77,40 +77,42 @@
                         <!-- Las filas de preguntas se generan dinámicamente o se definen aquí -->
                         <!-- Para mayor robustez, las definimos estáticamente sincronizadas con DEFAULT_QUESTIONS -->
 
-                        <script>
-                            // Función auxiliar para generar el HTML de una fila de Likert
-                            function generateLikertRow(id, title) {
-                                let html = `
-                                <div class="question-row" data-id="${id}">
-                                    <div class="question-text">
-                                        <span class="category-title">${title}</span>
-                                    </div>
-                                    <div class="side-past">
-                                        <div class="likert-group">`;
-                                for (let i = 1; i <= 5; i++) {
-                                    html += `
-                                            <label class="likert-option">
-                                                <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
-                                                <div class="likert-circle"></div><span class="likert-label">${i}</span>
-                                            </label>`;
-                                }
-                                html += `</div></div><div class="side-now"><div class="likert-group">`;
-                                for (let i = 1; i <= 5; i++) {
-                                    html += `
-                                            <label class="likert-option">
-                                                <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
-                                                <div class="likert-circle"></div><span class="likert-label">${i}</span>
-                                            </label>`;
-                                }
-                                html += `</div></div></div>`;
-                                return html;
-                            }
+// Función auxiliar optimizada para responsive
+function generateLikertRow(id, title) {
+    let html = `
+    <div class="question-row" data-id="${id}">
+        <div class="question-text">
+            <span class="category-title">${title}</span>
+        </div>
+        <div class="responses-container">
+            <div class="side-past">
+                <span class="mobile-label">PASADO</span>
+                <div class="likert-group">`;
+    for (let i = 1; i <= 5; i++) {
+        html += `
+                <label class="likert-option">
+                    <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
+                    <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                </label>`;
+    }
+    html += `</div></div>
+            <div class="side-now">
+                <span class="mobile-label">AHORA</span>
+                <div class="likert-group">`;
+    for (let i = 1; i <= 5; i++) {
+        html += `
+                <label class="likert-option">
+                    <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
+                    <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                </label>`;
+    }
+    html += `</div></div></div></div>`;
+    return html;
+}
 
-                            // Escribimos las preguntas iniciales para que el DOM esté listo antes de que app.js actue
-                            document.write(
-                                DEFAULT_QUESTIONS.map(q => generateLikertRow(q.id, q.category)).join('')
-                            );
-                        </script>
+document.write(
+    DEFAULT_QUESTIONS.map(q => generateLikertRow(q.id, q.category)).join('')
+);
                     </div>
 
                     <div class="form-actions">
@@ -139,4 +141,5 @@
 </body>
 
 </html>
+
 
