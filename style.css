@@ -479,14 +479,99 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* Responsive. Estilos para móviles (pantallas menores a 768px) */
+/* --- OPTIMIZACIÓN RESPONSIVE --- */
+
+/* Elementos auxiliares ocultos en desktop */
+.mobile-label {
+    display: none;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
 @media (max-width: 768px) {
-  body {
-    font-size: 16px;
-    padding: 10px;
-  }
-  
-  .menu-navegacion {
-    flex-direction: column; /* El menú se vuelve vertical en móviles */
-  }
+    /* Ajustes de tipografía general */
+    .survey-intro h1 { font-size: 1.8rem; }
+    .container { padding: 0 1rem; }
+
+    /* Ajuste de la sección de nombre */
+    .user-info-section {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+    .user-info-section input { width: 100%; }
+
+    /* Ocultamos la cabecera sticky original en móvil porque ocupa mucho espacio */
+    .matrix-header-sticky {
+        display: none; 
+    }
+
+    /* Transformamos la fila de pregunta */
+    .question-row {
+        display: block; /* La pregunta arriba, respuestas abajo */
+        padding: 1.5rem 1rem;
+    }
+
+    .question-text {
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .category-title {
+        font-size: 1.1rem;
+    }
+
+    /* Contenedor de las dos columnas de respuesta */
+    .responses-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Mantiene PASADO y AHORA al mismo nivel */
+        gap: 10px;
+        background: #f1f5f9;
+        padding: 15px 5px;
+        border-radius: 12px;
+    }
+
+    .mobile-label {
+        display: block; /* Mostramos PASADO/AHORA encima de cada grupo */
+    }
+
+    .side-now .mobile-label {
+        color: var(--accent); /* Resaltamos el 'Ahora' */
+    }
+
+    /* Ajuste de los círculos Likert para que quepan 5 en línea en móvil */
+    .likert-group {
+        padding: 0;
+        gap: 4px;
+    }
+
+    .likert-circle {
+        width: 28px;
+        height: 28px;
+    }
+
+    .likert-label {
+        font-size: 0.75rem;
+    }
+
+    /* Botón de envío */
+    .btn-xl {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Ajuste extra para móviles muy pequeños (iPhone SE, etc) */
+@media (max-width: 380px) {
+    .likert-circle {
+        width: 24px;
+        height: 24px;
+    }
+    .likert-label {
+        font-size: 0.65rem;
+    }
 }
