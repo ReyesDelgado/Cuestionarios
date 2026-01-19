@@ -79,35 +79,36 @@
 
 // Función auxiliar optimizada para responsive
 function generateLikertRow(id, title) {
-    let html = `
+    return `
     <div class="question-row" data-id="${id}">
         <div class="question-text">
             <span class="category-title">${title}</span>
         </div>
-        <div class="responses-container">
+        <div class="responses-wrapper">
             <div class="side-past">
-                <span class="mobile-label">PASADO</span>
-                <div class="likert-group">`;
-    for (let i = 1; i <= 5; i++) {
-        html += `
-                <label class="likert-option">
-                    <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
-                    <div class="likert-circle"></div><span class="likert-label">${i}</span>
-                </label>`;
-    }
-    html += `</div></div>
+                <span class="mobile-only-label">PASADO</span>
+                <div class="likert-group">
+                    ${[1,2,3,4,5].map(i => `
+                        <label class="likert-option">
+                            <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
+                            <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
             <div class="side-now">
-                <span class="mobile-label">AHORA</span>
-                <div class="likert-group">`;
-    for (let i = 1; i <= 5; i++) {
-        html += `
-                <label class="likert-option">
-                    <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
-                    <div class="likert-circle"></div><span class="likert-label">${i}</span>
-                </label>`;
-    }
-    html += `</div></div></div></div>`;
-    return html;
+                <span class="mobile-only-label">AHORA</span>
+                <div class="likert-group">
+                    ${[1,2,3,4,5].map(i => `
+                        <label class="likert-option">
+                            <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
+                            <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    </div>`;
 }
 
 document.write(
@@ -141,5 +142,6 @@ document.write(
 </body>
 
 </html>
+
 
 
