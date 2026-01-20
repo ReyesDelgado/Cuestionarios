@@ -97,12 +97,31 @@ async function saveToSupabase(payload) {
     try {
         console.log('📤 Attempting to insert data into Supabase...');
 
+        // Construir el registro con columnas individuales
         const recordToInsert = {
             user_name: payload.Usuario || 'Anónimo',
             submitted_at: new Date().toISOString(),
-            responses: payload,
             synced_to_sheets: false
         };
+
+        // Mapear cada pregunta a sus columnas correspondientes
+        // Formato del payload: "Pregunta X (Pasado)", "Pregunta X (Ahora)", "Pregunta X (Diferencia)"
+        for (let i = 1; i <= 8; i++) {
+            const preguntaKey = `Pregunta ${i}`;
+            const pasadoKey = `${preguntaKey} (Pasado)`;
+            const ahoraKey = `${preguntaKey} (Ahora)`;
+            const diferenciaKey = `${preguntaKey} (Diferencia)`;
+
+            if (payload[pasadoKey] !== undefined) {
+                recordToInsert[`pregunta_${i}_pasado`] = payload[pasadoKey];
+            }
+            if (payload[ahoraKey] !== undefined) {
+                recordToInsert[`pregunta_${i}_ahora`] = payload[ahoraKey];
+            }
+            if (payload[diferenciaKey] !== undefined) {
+                recordToInsert[`pregunta_${i}_diferencia`] = payload[diferenciaKey];
+            }
+        }
 
         console.log('📝 Record to insert:', recordToInsert);
 
@@ -122,13 +141,15 @@ async function saveToSupabase(payload) {
 
             // Diagnóstico específico
             if (error.message.includes('relation') || error.message.includes('does not exist')) {
-                console.error('💡 SOLUTION: The table does not exist. Run the SQL script in SETUP_SUPABASE.md');
+                console.error('💡 SOLUTION: The table does not exist. Run the SQL script in supabase-schema.sql');
+                console.error('📄 File location: supabase-schema.sql');
             } else if (error.code === '42501' || error.message.includes('policy')) {
                 console.error('💡 SOLUTION: Row Level Security policy error. Check RLS policies in Supabase.');
-                console.error('Run this SQL: ALTER TABLE survey_responses ENABLE ROW LEVEL SECURITY;');
-                console.error('Then: CREATE POLICY "Allow anonymous inserts" ON survey_responses FOR INSERT TO anon WITH CHECK (true);');
+                console.error('Run the SQL in supabase-schema.sql to set up policies correctly.');
             } else if (error.message.includes('JWT') || error.message.includes('auth')) {
                 console.error('💡 SOLUTION: Invalid API key. Check SUPABASE_ANON_KEY in supabase-config.js');
+            } else if (error.message.includes('column') || error.message.includes('does not exist')) {
+                console.error('💡 SOLUTION: Table structure is outdated. Run supabase-schema.sql to update the table.');
             }
 
             throw error;
@@ -148,6 +169,7 @@ async function saveToSupabase(payload) {
         throw error;
     }
 }
+
 
 
 // Marcar como sincronizado con Google Sheets
@@ -204,7 +226,30 @@ async function syncPendingRecords(webhookUrl) {
 
     for (const record of pending) {
         try {
-            await sendToGoogleSheets(webhookUrl, record.responses);
+            // Reconstruir el payload en el formato de Google Sheets
+            const payload = {
+                "Fecha": new Date(record.submitted_at).toLocaleString(),
+                "Usuario": record.user_name
+            };
+
+            // Mapear las columnas individuales al formato del payload
+            for (let i = 1; i <= 8; i++) {
+                const pasado = record[`pregunta_${i}_pasado`];
+                const ahora = record[`pregunta_${i}_ahora`];
+                const diferencia = record[`pregunta_${i}_diferencia`];
+
+                if (pasado !== null && pasado !== undefined) {
+                    payload[`Pregunta ${i} (Pasado)`] = pasado;
+                }
+                if (ahora !== null && ahora !== undefined) {
+                    payload[`Pregunta ${i} (Ahora)`] = ahora;
+                }
+                if (diferencia !== null && diferencia !== undefined) {
+                    payload[`Pregunta ${i} (Diferencia)`] = diferencia;
+                }
+            }
+
+            await sendToGoogleSheets(webhookUrl, payload);
             await markAsSynced(record.id);
             console.log(`✅ Synced record ${record.id}`);
         } catch (error) {
@@ -213,6 +258,7 @@ async function syncPendingRecords(webhookUrl) {
         }
     }
 }
+
 
 /*
 SQL PARA CREAR LA TABLA EN SUPABASE:
