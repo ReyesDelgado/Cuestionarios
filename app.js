@@ -151,11 +151,14 @@ if (mainForm) {
         try {
             // PASO 1: Guardar en Supabase (Base de datos principal)
             console.log("📊 Guardando en Supabase...");
-            btn.innerHTML = '<span>Guardando...</span>';
+            btn.innerHTML = '<span>Guardando en base de datos...</span>';
 
             let supabaseRecord = null;
+            let supabaseSaved = false;
+
             try {
                 supabaseRecord = await saveToSupabase(payload);
+                supabaseSaved = true;
                 console.log("✅ Datos guardados en Supabase:", supabaseRecord);
             } catch (supabaseError) {
                 console.warn("⚠️ Supabase no disponible, continuando con Google Sheets:", supabaseError.message);
@@ -167,18 +170,12 @@ if (mainForm) {
                 sessionStorage.getItem('temp_webhook') ||
                 localStorage.getItem('google_sheet_webhook');
 
-            if (webhook && supabaseRecord) {
-                try {
-                    console.log("🔄 Sincronizando registros pendientes...");
-                    await syncPendingRecords(webhook);
-                } catch (syncError) {
-                    console.warn("⚠️ Error sincronizando pendientes:", syncError);
-                }
-            }
+            // NOTA: NO sincronizamos registros pendientes aquí para evitar duplicados.
+            // Los registros pendientes se sincronizarán automáticamente en el próximo envío.
 
             // PASO 3: Enviar a Google Sheets (con reintentos)
             if (webhook) {
-                btn.innerHTML = '<span>Enviando cuestionario...</span>';
+                btn.innerHTML = '<span>Enviando a Google Sheets...</span>';
 
                 const maxRetries = 3;
                 let retryCount = 0;
@@ -198,9 +195,10 @@ if (mainForm) {
                         sheetSuccess = true;
                         console.log("✅ Datos enviados a Google Sheets");
 
-                        // Marcar como sincronizado en Supabase
-                        if (supabaseRecord) {
+                        // Marcar como sincronizado en Supabase SOLO si se guardó exitosamente
+                        if (supabaseSaved && supabaseRecord) {
                             await markAsSynced(supabaseRecord.id);
+                            console.log("✅ Registro marcado como sincronizado en Supabase");
                         }
 
                     } catch (sheetError) {
@@ -218,7 +216,9 @@ if (mainForm) {
 
                 if (!sheetSuccess) {
                     console.warn("⚠️ No se pudo enviar a Google Sheets después de 3 intentos");
-                    console.log("💾 Los datos están guardados en Supabase y se sincronizarán automáticamente");
+                    if (supabaseSaved) {
+                        console.log("💾 Los datos están guardados en Supabase y se sincronizarán automáticamente en el próximo envío");
+                    }
                 }
             } else {
                 console.warn("⚠️ No hay webhook configurado para Google Sheets");
@@ -354,5 +354,3 @@ if (document.readyState === 'loading') {
 } else {
     startup();
 }
-
-
