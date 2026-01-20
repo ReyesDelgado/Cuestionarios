@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
 
     <!-- CONFIGURACIÓN DE PREGUNTAS Y DESTINO (Accesible directamente en el HTML) -->
     <script id="data-config">
@@ -77,43 +80,40 @@
                         <!-- Las filas de preguntas se generan dinámicamente o se definen aquí -->
                         <!-- Para mayor robustez, las definimos estáticamente sincronizadas con DEFAULT_QUESTIONS -->
 
-// Función auxiliar optimizada para responsive
-function generateLikertRow(id, title) {
-    return `
-    <div class="question-row" data-id="${id}">
-        <div class="question-text">
-            <span class="category-title">${title}</span>
-        </div>
-        <div class="responses-wrapper">
-            <div class="side-past">
-                <span class="mobile-only-label">PASADO</span>
-                <div class="likert-group">
-                    ${[1,2,3,4,5].map(i => `
-                        <label class="likert-option">
-                            <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
-                            <div class="likert-circle"></div><span class="likert-label">${i}</span>
-                        </label>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="side-now">
-                <span class="mobile-only-label">AHORA</span>
-                <div class="likert-group">
-                    ${[1,2,3,4,5].map(i => `
-                        <label class="likert-option">
-                            <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
-                            <div class="likert-circle"></div><span class="likert-label">${i}</span>
-                        </label>
-                    `).join('')}
-                </div>
-            </div>
-        </div>
-    </div>`;
-}
+                        <script>
+                            // Función auxiliar para generar el HTML de una fila de Likert
+                            function generateLikertRow(id, title) {
+                                let html = `
+                                <div class="question-row" data-id="${id}">
+                                    <div class="question-text">
+                                        <span class="category-title">${title}</span>
+                                    </div>
+                                    <div class="side-past">
+                                        <div class="likert-group">`;
+                                for (let i = 1; i <= 5; i++) {
+                                    html += `
+                                            <label class="likert-option">
+                                                <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
+                                                <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                                            </label>`;
+                                }
+                                html += `</div></div><div class="side-now"><div class="likert-group">`;
+                                for (let i = 1; i <= 5; i++) {
+                                    html += `
+                                            <label class="likert-option">
+                                                <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
+                                                <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                                            </label>`;
+                                }
+                                html += `</div></div></div>`;
+                                return html;
+                            }
 
-document.write(
-    DEFAULT_QUESTIONS.map(q => generateLikertRow(q.id, q.category)).join('')
-);
+                            // Escribimos las preguntas iniciales para que el DOM esté listo antes de que app.js actue
+                            document.write(
+                                DEFAULT_QUESTIONS.map(q => generateLikertRow(q.id, q.category)).join('')
+                            );
+                        </script>
                     </div>
 
                     <div class="form-actions">
@@ -131,7 +131,7 @@ document.write(
             <div class="modal-content">
                 <i data-lucide="party-popper" class="icon-xl"></i>
                 <h2>¡Cuestionario enviado!</h2>
-                <p>Tu respuesta ha sido guardada con éxito.</p>
+                <p>El cuestionario ha sido enviado correctamente.</p>
                 <button class="btn btn-secondary" onclick="location.reload()">Nuevo Envío</button>
             </div>
         </div>
@@ -142,6 +142,3 @@ document.write(
 </body>
 
 </html>
-
-
-
