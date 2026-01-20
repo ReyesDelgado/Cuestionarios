@@ -4,7 +4,7 @@
     --bg-card: #ffffff;
     --accent: #5a67d8;
     --accent-light: rgba(90, 103, 216, 0.1);
-    --text-primary: #1a202c;
+    --text-primary: #000000;
     --text-secondary: #4a5568;
     --text-muted: #718096;
     --border: #e2e8f0;
@@ -558,3 +558,4 @@ body {
         width: 100%;
     }
 }
+
