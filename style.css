@@ -101,7 +101,7 @@ body {
 .survey-intro h1 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: #2d3748;
+    color: #000000;
 }
 
 .survey-intro p {
@@ -558,6 +558,7 @@ body {
         width: 100%;
     }
 }
+
 
 
 
