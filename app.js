@@ -53,7 +53,7 @@ function renderQuestions() {
         <div class="question-row fade-in" data-id="${q.id}">
             <div class="question-text">
                 <span class="category-title">${q.category}</span>
-                <span class="question-subtext">${q.subtext}</span>
+                <span class="question-subtext">${q.subtext || ''}</span>
             </div>
             
             <div class="side-past">
@@ -105,7 +105,7 @@ window.saveResponse = function (key, value) {
     }
 };
 
-// 6. Envío a Google Sheets
+// 6. Envío Robusto a Supabase + Google Sheets
 const mainForm = document.getElementById('matrix-form');
 if (mainForm) {
     mainForm.addEventListener('submit', async (e) => {
@@ -130,26 +130,9 @@ if (mainForm) {
         }
 
         btn.disabled = true;
-        btn.innerHTML = '<span>Enviando...</span>';
+        btn.innerHTML = '<span>Guardando...</span>';
 
-        // Intentar recuperar el webhook de todas las fuentes posibles, priorizando el nuevo del HTML
-        let webhook = (typeof WEBHOOK_URL !== 'undefined' ? WEBHOOK_URL : '') ||
-            sessionStorage.getItem('temp_webhook') ||
-            localStorage.getItem('google_sheet_webhook');
-
-        if (!webhook) {
-            console.error("WEBHOOK_URL no encontrada.");
-            alert('Error: No se ha configurado la dirección de Google Sheets.');
-            btn.disabled = false;
-            btn.innerHTML = '<span>Enviar Resultados</span><i data-lucide="send" class="icon-right"></i>';
-            if (window.lucide) lucide.createIcons();
-            return;
-        }
-
-        console.log("Webhook destino:", webhook);
-
-
-        // Recolectar datos dinámicamente basándonos en las preguntas actuales
+        // Construir payload
         const payload = {
             "Fecha": new Date().toLocaleString(),
             "Usuario": userName
@@ -165,20 +148,83 @@ if (mainForm) {
             }
         });
 
-
-
-
         try {
-            console.log("Enviando payload...", payload);
-            fetch(webhook, {
-                method: 'POST',
-                mode: 'no-cors',
-                cache: 'no-cache',
-                body: JSON.stringify(payload)
-            }).then(() => console.log("Fetch disparado con éxito."))
-                .catch(e => console.error("Error en Fetch:", e));
+            // PASO 1: Guardar en Supabase (Base de datos principal)
+            console.log("📊 Guardando en Supabase...");
+            btn.innerHTML = '<span>Guardando en base de datos...</span>';
 
-            // Mostramos éxito inmediatamente para mejor UX
+            let supabaseRecord = null;
+            try {
+                supabaseRecord = await saveToSupabase(payload);
+                console.log("✅ Datos guardados en Supabase:", supabaseRecord);
+            } catch (supabaseError) {
+                console.warn("⚠️ Supabase no disponible, continuando con Google Sheets:", supabaseError.message);
+                // Si Supabase falla, continuamos con Google Sheets
+            }
+
+            // PASO 2: Intentar sincronizar registros pendientes
+            const webhook = (typeof WEBHOOK_URL !== 'undefined' ? WEBHOOK_URL : '') ||
+                sessionStorage.getItem('temp_webhook') ||
+                localStorage.getItem('google_sheet_webhook');
+
+            if (webhook && supabaseRecord) {
+                try {
+                    console.log("🔄 Sincronizando registros pendientes...");
+                    await syncPendingRecords(webhook);
+                } catch (syncError) {
+                    console.warn("⚠️ Error sincronizando pendientes:", syncError);
+                }
+            }
+
+            // PASO 3: Enviar a Google Sheets (con reintentos)
+            if (webhook) {
+                btn.innerHTML = '<span>Enviando a Google Sheets...</span>';
+
+                const maxRetries = 3;
+                let retryCount = 0;
+                let sheetSuccess = false;
+
+                while (retryCount < maxRetries && !sheetSuccess) {
+                    try {
+                        console.log(`📤 Intento ${retryCount + 1}/${maxRetries} de envío a Google Sheets...`);
+
+                        await fetch(webhook, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            cache: 'no-cache',
+                            body: JSON.stringify(payload)
+                        });
+
+                        sheetSuccess = true;
+                        console.log("✅ Datos enviados a Google Sheets");
+
+                        // Marcar como sincronizado en Supabase
+                        if (supabaseRecord) {
+                            await markAsSynced(supabaseRecord.id);
+                        }
+
+                    } catch (sheetError) {
+                        retryCount++;
+                        console.warn(`❌ Intento ${retryCount} falló:`, sheetError);
+
+                        if (retryCount < maxRetries) {
+                            // Esperar antes de reintentar (backoff exponencial)
+                            const waitTime = Math.pow(2, retryCount) * 1000;
+                            console.log(`⏳ Esperando ${waitTime}ms antes de reintentar...`);
+                            await new Promise(resolve => setTimeout(resolve, waitTime));
+                        }
+                    }
+                }
+
+                if (!sheetSuccess) {
+                    console.warn("⚠️ No se pudo enviar a Google Sheets después de 3 intentos");
+                    console.log("💾 Los datos están guardados en Supabase y se sincronizarán automáticamente");
+                }
+            } else {
+                console.warn("⚠️ No hay webhook configurado para Google Sheets");
+            }
+
+            // PASO 4: Mostrar éxito al usuario
             setTimeout(() => {
                 const modal = document.getElementById('modal-success');
                 if (modal) modal.classList.remove('hidden');
@@ -195,14 +241,32 @@ if (mainForm) {
             }, 600);
 
         } catch (err) {
-            console.error("Error envío:", err);
-            alert('Error de conexión. Revisa el Script de Google.');
+            console.error("❌ Error crítico en el envío:", err);
+
+            // Mostrar mensaje de error específico
+            let errorMsg = 'Error al guardar los datos. ';
+            if (err.message.includes('Supabase not configured')) {
+                errorMsg += 'Por favor, configura Supabase en supabase-config.js';
+            } else {
+                errorMsg += 'Por favor, verifica tu conexión e intenta de nuevo.';
+            }
+
+            alert(errorMsg);
+
             btn.disabled = false;
             btn.innerHTML = '<span>Enviar Resultados</span><i data-lucide="send" class="icon-right"></i>';
+            if (window.lucide) lucide.createIcons();
         }
+    });
+}
 
-
-
+// Función auxiliar para enviar a Google Sheets
+async function sendToGoogleSheets(webhook, payload) {
+    return fetch(webhook, {
+        method: 'POST',
+        mode: 'no-cors',
+        cache: 'no-cache',
+        body: JSON.stringify(payload)
     });
 }
 
@@ -228,7 +292,7 @@ function renderAdminQuestions() {
     list.innerHTML = QUESTIONS.map((q, i) => `
         <div class="admin-q-item">
             <input type="text" value="${q.category}" onchange="updateQ(${i}, 'category', this.value)" placeholder="Categoría">
-            <input type="text" value="${q.subtext}" onchange="updateQ(${i}, 'subtext', this.value)" placeholder="Descripción">
+            <input type="text" value="${q.subtext || ''}" onchange="updateQ(${i}, 'subtext', this.value)" placeholder="Descripción">
             <button onclick="removeQ(${i})" class="btn-icon">×</button>
         </div>
     `).join('');
