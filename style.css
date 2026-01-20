@@ -6,7 +6,7 @@
     --accent-light: rgba(90, 103, 216, 0.1);
     --text-primary: #000000;
     --text-secondary: #000000;
-    --text-muted: #718096;
+    --text-muted: #000000;
     --border: #e2e8f0;
     --radius: 12px;
     --transition: all 0.3s ease;
@@ -558,6 +558,7 @@ body {
         width: 100%;
     }
 }
+
 
 
 
