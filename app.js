@@ -178,7 +178,7 @@ if (mainForm) {
 
             // PASO 3: Enviar a Google Sheets (con reintentos)
             if (webhook) {
-                btn.innerHTML = '<span>Enviando a Google Sheets...</span>';
+                btn.innerHTML = '<span>Enviando cuestionario...</span>';
 
                 const maxRetries = 3;
                 let retryCount = 0;
@@ -354,3 +354,4 @@ if (document.readyState === 'loading') {
 } else {
     startup();
 }
+
