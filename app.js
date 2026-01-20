@@ -151,7 +151,7 @@ if (mainForm) {
         try {
             // PASO 1: Guardar en Supabase (Base de datos principal)
             console.log("📊 Guardando en Supabase...");
-            btn.innerHTML = '<span>Guardando en base de datos...</span>';
+            btn.innerHTML = '<span>Guardando...</span>';
 
             let supabaseRecord = null;
             try {
@@ -354,4 +354,5 @@ if (document.readyState === 'loading') {
 } else {
     startup();
 }
+
 
