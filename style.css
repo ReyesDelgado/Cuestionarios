@@ -21,7 +21,7 @@
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--bg-main);
-    color: var(--text-primary);
+    color: #000000;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
 }
@@ -558,4 +558,5 @@ body {
         width: 100%;
     }
 }
+
 
