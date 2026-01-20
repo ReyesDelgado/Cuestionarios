@@ -250,7 +250,7 @@ body {
     display: block;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #2d3748;
+    color: #000000;
     margin-bottom: 0.5rem;
 }
 
@@ -558,6 +558,7 @@ body {
         width: 100%;
     }
 }
+
 
 
 
