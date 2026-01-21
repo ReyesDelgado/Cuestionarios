@@ -651,22 +651,25 @@ body {
     .col-past {
         border-right: 2px solid #cbd5e1;
         padding-right: 24px;
-        /* MUY IMPORTANTE: Esto mueve la línea a la derecha */
         margin-right: 0;
         display: flex;
         justify-content: center;
         width: 100%;
     }
 
-    .side-now,
-    .col-now {
-        padding-left: 0;
-        /* Eliminado padding para pegar a la izquierda */
+    /* Alineación de CÍRCULOS (side-now) a la izquierda */
+    .side-now {
         display: flex;
-        justify-content: flex-start;
-        /* Forzar alineación a la izquierda */
+        justify-content: flex-start; /* Círculos a la izquierda */
         padding-left: 2px;
-        /* Mínimo respiro */
+        width: 100%;
+    }
+
+    /* Alineación del TÍTULO (col-now) al centro */
+    .col-now {
+        display: flex;
+        justify-content: center !important; /* Texto AHORA centrado */
+        padding-left: 0;
         width: 100%;
     }
 }
