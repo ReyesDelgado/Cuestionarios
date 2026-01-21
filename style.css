@@ -517,12 +517,13 @@ body {
 
     .col-category {
         display: flex;
-        justify-content: center;
-        /* Centrar horizontalmente */
+        justify-content: center !important;
+        /* Forzar centrado */
         align-items: center;
-        /* Centrar verticalmente */
-        text-align: center;
+        text-align: center !important;
         padding-left: 0;
+        width: 100%;
+        /* Ocupar todo el espacio de la celda */
     }
 
     /* Asegurar que Pasado y Ahora estén centrados */
