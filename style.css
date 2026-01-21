@@ -2,7 +2,7 @@
 :root {
     --bg-main: #f8fafc;
     --bg-card: #ffffff;
-    --accent: #859EFF;
+    --accent: #5a67d8;
     --accent-light: rgba(90, 103, 216, 0.1);
     --text-primary: #000000;
     --text-secondary: #000000;
@@ -629,9 +629,10 @@ body {
     .matrix-header-sticky,
     .question-row {
         grid-template-columns: 1fr 125px 125px;
-        /* Un poco más de ancho */
-        gap: 0;
-        /* Controlamos el espacio manualmente */
+        grid-gap: 12px;
+        /* Aumentamos gap para separar Pregunta de Pasado */
+        align-items: center;
+        /* Alineación vertical CENTRADA para los círculos */
     }
 
     /* Separador vertical perfectamente centrado */
