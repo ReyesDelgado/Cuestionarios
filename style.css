@@ -7,7 +7,7 @@
     --text-primary: #000000;
     --text-secondary: #000000;
     --text-muted: #000000;
-    --border: rgb(95,99,104);
+    --border: #e2e8f0;
     --radius: 12px;
     --transition: all 0.3s ease;
 }
@@ -600,4 +600,5 @@ body {
         height: 16px;
     }
 }
+
 
