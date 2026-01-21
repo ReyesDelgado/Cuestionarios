@@ -2,7 +2,7 @@
 :root {
     --bg-main: #f8fafc;
     --bg-card: #ffffff;
-    --accent: #5a67d8;
+    --accent: #859EFF;
     --accent-light: rgba(90, 103, 216, 0.1);
     --text-primary: #000000;
     --text-secondary: #000000;
@@ -600,5 +600,6 @@ body {
         height: 16px;
     }
 }
+
 
 
