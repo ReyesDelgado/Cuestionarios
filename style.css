@@ -612,6 +612,7 @@ body {
         z-index: 95;
         border-radius: 0;
         text-align: center;
+        align-items: center; /* Centrar verticalmente el contenido del encabezado */
     }
 
     .col-past {
@@ -649,10 +650,13 @@ body {
 
     .side-now,
     .col-now {
-        padding-left: 8px;
-        /* Reducido para acercar círculos a la izquierda */
+        padding-left: 0;
+        /* Eliminado padding para pegar a la izquierda */
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        /* Forzar alineación a la izquierda */
+        padding-left: 2px;
+        /* Mínimo respiro */
         width: 100%;
     }
 }
