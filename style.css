@@ -246,9 +246,16 @@ body {
     background: #fcfdfe;
 }
 
+.question-text {
+    text-align: justify;
+    padding-right: 1.5rem;
+    /* Añadir un poco de espacio para que la justificación no pegue con la siguiente columna */
+}
+
 .category-title {
     display: block;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+    /* Reducido de 1.3rem */
     font-weight: 600;
     color: #000000;
     margin-bottom: 0.5rem;
@@ -584,6 +591,69 @@ body {
         gap: 0.5rem;
         padding: 1rem;
     }
+
+    /* Separador vertical entre Pasado y Ahora */
+    /* Ajuste radical de la grilla para móvil */
+    .matrix-header-sticky,
+    .question-row {
+        /* Aumentamos el gap entre las columnas de Pasado y Ahora */
+        grid-template-columns: 1fr 120px 10px 120px;
+        /* Pregunta | Pasado | Separador | Ahora */
+        gap: 0;
+        padding: 1rem 0.5rem;
+    }
+
+    /* Cabecera fija móvil */
+    .matrix-header-sticky {
+        display: grid;
+        top: 60px;
+        font-size: 0.7rem;
+        padding: 10px 5px;
+        z-index: 95;
+        border-radius: 0;
+        text-align: center;
+    }
+
+    .col-past {
+        text-align: center;
+        /* Asegurar texto centrado */
+        justify-content: center;
+        display: flex;
+    }
+
+    /* El separador ahora es su propia "columna" virtual en el grid de 4 cols
+       Pero como no podemos cambiar el HTML fácilmente, usamos pseudo-elemento o border en el elemento correcto.
+       
+       Mejor estrategia: Volver a 3 columnas pero usar Margin/Padding inteligente.
+    */
+    .matrix-header-sticky,
+    .question-row {
+        grid-template-columns: 1fr 125px 125px;
+        /* Un poco más de ancho */
+        gap: 0;
+        /* Controlamos el espacio manualmente */
+    }
+
+    /* Separador vertical perfectamente centrado */
+    .side-past,
+    .col-past {
+        border-right: 2px solid #cbd5e1;
+        padding-right: 24px;
+        /* MUY IMPORTANTE: Esto mueve la línea a la derecha */
+        margin-right: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .side-now,
+    .col-now {
+        padding-left: 8px;
+        /* Reducido para acercar círculos a la izquierda */
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
 }
 
 /* Ajustes para pantallas MUY pequeñas (iPhone SE, etc) */
@@ -600,6 +670,3 @@ body {
         height: 16px;
     }
 }
-
-
-
