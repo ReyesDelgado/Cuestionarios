@@ -479,17 +479,124 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* Responsive */
+/* Responsive Optimizado */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* Ajuste radical de la grilla para móvil */
+    .matrix-header-sticky,
+    .question-row {
+        grid-template-columns: 1fr 120px 120px;
+        /* Pregunta | Pasado | Ahora */
+        gap: 0.5rem;
+        padding: 1rem 0.5rem;
+    }
+
+    /* Cabecera fija móvil */
+    .matrix-header-sticky {
+        display: grid;
+        top: 60px;
+        font-size: 0.7rem;
+        padding: 10px 5px;
+        z-index: 95;
+        border-radius: 0;
+        text-align: center;
+        /* Centrar todo por defecto */
+    }
+
+    .col-category {
+        display: block;
+        /* MOSTRAR columna Pregunta */
+        text-align: left;
+        /* Alinear pregunta a la izquierda */
+        padding-left: 5px;
+    }
+
+    /* Asegurar que Pasado y Ahora estén centrados */
+    .col-past,
+    .col-now {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .question-row {
+        align-items: flex-start;
+        /* Alinear arriba para preguntas largas */
+    }
+
+    .question-text {
+        padding-right: 5px;
+    }
+
+    .category-title {
+        font-size: 0.95rem;
+        /* Letra más pequeña */
+        line-height: 1.3;
+    }
+
+    .question-subtext {
+        font-size: 0.8rem;
+    }
+
+    /* Compactar escalas Likert */
+    .likert-group {
+        padding: 0;
+        gap: 2px;
+    }
+
+    .likert-circle {
+        width: 20px;
+        /* Círculos mucho más pequeños */
+        height: 20px;
+        border-width: 1px;
+    }
+
+    .likert-label {
+        font-size: 0.7rem;
+        /* Números pequeños */
+    }
+
+    /* Estado seleccionado ajustado */
+    .likert-option input:checked+.likert-circle {
+        transform: scale(1.1);
+    }
+
+    .likert-option input:checked+.likert-circle::after {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* Ocultar elementos decorativos en móvil */
+    .survey-intro h1 {
+        font-size: 1.8rem;
+    }
+
+    .app-header {
+        padding: 0.5rem 0;
+    }
+
+    .user-info-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+}
+
+/* Ajustes para pantallas MUY pequeñas (iPhone SE, etc) */
+@media (max-width: 380px) {
 
     .matrix-header-sticky,
     .question-row {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 1.5rem;
+        grid-template-columns: 1fr 100px 100px;
+        /* Aún más compacto */
     }
 
-    .matrix-header-sticky {
-        display: none;
+    .likert-circle {
+        width: 16px;
+        height: 16px;
     }
 }
