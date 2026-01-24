@@ -109,17 +109,34 @@ body {
     color: var(--text-secondary);
 }
 
-/* User Info Section */
+/* User Info Section (Contenedor transparente) */
 .user-info-section {
+    background: transparent;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+    /* Separación grande entre tarjetas */
+    box-shadow: none;
+}
+
+/* Tarjeta individual para cada pregunta */
+.info-card {
     background: white;
     padding: 2rem 2.5rem;
     border-radius: 12px;
-    margin-bottom: 2rem;
     border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .user-info-section label {
@@ -129,9 +146,12 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     white-space: nowrap;
+    min-width: 100px;
+    /* Ensure labels align nicely */
 }
 
-.user-info-section input {
+.user-info-section input,
+.user-info-section select {
     flex: 1;
     padding: 0.85rem 1.25rem;
     border-radius: 8px;
@@ -142,12 +162,105 @@ body {
     background: #f8fafc;
 }
 
-.user-info-section input:focus {
+.user-info-section select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.user-info-section input:focus,
+.user-info-section select:focus {
     outline: none;
     border-color: var(--accent);
     background: white;
     box-shadow: 0 0 0 3px var(--accent-light);
 }
+
+/* Vertical Radio Lists */
+/* Vertical Radio Lists */
+.form-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0;
+    /* Eliminado margen superior extra */
+}
+
+.form-group-vertical label.question-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.radio-option-item {
+    display: inline-flex;
+    /* Cambiado a inline-flex o flex con width auto */
+    width: fit-content;
+    /* NO ocupar todo el ancho */
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: normal;
+    color: var(--text-secondary);
+    justify-content: flex-start;
+    text-align: left;
+    /* Forzar texto a la izquierda */
+}
+
+.radio-option-item input[type="radio"] {
+    appearance: none;
+    display: grid;
+    place-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    /* BLINDAJE ANTI-OVALADO */
+    min-height: 36px;
+    border: 2px solid rgb(95, 99, 104);
+    border-radius: 50%;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    /* BLINDAJE ANTI-APLASTAMIENTO */
+    position: relative;
+    cursor: pointer;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.radio-option-item input[type="radio"]:checked {
+    border-color: var(--accent);
+    background: var(--accent);
+    /* Fondo relleno al seleccionar, estilo Likert */
+    box-shadow: 0 4px 12px rgba(90, 103, 216, 0.3);
+}
+
+.radio-option-item input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: white;
+    /* Punto blanco interno */
+    border-radius: 50%;
+}
+
 
 /* Matrix Table */
 .matrix-header-sticky,
@@ -454,8 +567,13 @@ body {
 }
 
 .form-actions {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
     margin-top: 4rem;
+    flex-wrap: wrap;
+    /* Para móviles */
 }
 
 /* Modals */
@@ -594,10 +712,22 @@ body {
     }
 
     .user-info-section {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .form-group {
+        display: flex;
         flex-direction: column;
         align-items: stretch;
         gap: 0.5rem;
-        padding: 1rem;
+    }
+
+    /* Reducir radios en móvil para coincidir con Likert */
+    .radio-option-item input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        border-width: 1px;
     }
 
     /* Separador vertical entre Pasado y Ahora */
@@ -660,7 +790,8 @@ body {
     /* Alineación de CÍRCULOS (side-now) a la izquierda */
     .side-now {
         display: flex;
-        justify-content: flex-start; /* Círculos a la izquierda */
+        justify-content: flex-start;
+        /* Círculos a la izquierda */
         padding-left: 2px;
         width: 100%;
     }
@@ -668,7 +799,8 @@ body {
     /* Alineación del TÍTULO (col-now) al centro */
     .col-now {
         display: flex;
-        justify-content: center !important; /* Texto AHORA centrado */
+        justify-content: center !important;
+        /* Texto AHORA centrado */
         padding-left: 0;
         width: 100%;
     }
