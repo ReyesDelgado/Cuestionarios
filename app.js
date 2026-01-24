@@ -106,11 +106,61 @@ window.saveResponse = function (key, value) {
 };
 
 // 6. Envío Robusto a Supabase + Google Sheets
+// Flag global para prevenir envíos duplicados
+let isSubmitting = false;
+
+// Función para navegar entre secciones
+window.validateAndNext = function () {
+    const userName = document.getElementById('user-name').value.trim();
+    const userProfile = document.getElementById('user-profile').value;
+    const timeUsingAi = document.querySelector('input[name="time_using_ai"]:checked');
+    const freqUsingAi = document.querySelector('input[name="frequency_using_ai"]:checked');
+
+    if (!userName) {
+        alert('Por favor, escribe tu nombre.');
+        document.getElementById('user-name').focus();
+        return;
+    }
+    if (!userProfile) {
+        alert('Por favor, selecciona tu género.');
+        document.getElementById('user-profile').focus();
+        return;
+    }
+    if (!timeUsingAi) {
+        alert('Por favor, indica cuánto tiempo llevas utilizando la IAG.');
+        return;
+    }
+    if (!freqUsingAi) {
+        alert('Por favor, indica con qué frecuencia utilizas la IAG.');
+        return;
+    }
+
+    // Si todo es válido, cambiar de sección
+    document.getElementById('section-1').classList.add('hidden');
+    document.getElementById('section-2').classList.remove('hidden');
+    window.scrollTo(0, 0); // Scroll al inicio para ver las preguntas
+};
+
+window.prevSection = function () {
+    document.getElementById('section-2').classList.add('hidden');
+    document.getElementById('section-1').classList.remove('hidden');
+    window.scrollTo(0, 0);
+};
+
 const mainForm = document.getElementById('matrix-form');
 if (mainForm) {
     mainForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        console.log("Evento submit capturado. Validando...");
+
+        // PROTECCIÓN CONTRA DUPLICADOS: Verificar si ya hay un envío en progreso
+        if (isSubmitting) {
+            console.warn("⚠️ Envío ya en progreso. Ignorando evento duplicado.");
+            return;
+        }
+
+        // Generar ID único para esta transacción (para debugging)
+        const transactionId = `tx_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        console.log(`📝 [${transactionId}] Evento submit capturado. Validando...`);
 
         const required = QUESTIONS.flatMap(q => [`past_${q.id}`, `now_${q.id}`]);
         const missing = required.filter(k => !responses[k]);
@@ -124,18 +174,35 @@ if (mainForm) {
         const userNameInput = document.getElementById('user-name');
         const userName = userNameInput ? userNameInput.value.trim() : "Anónimo";
 
+        const userProfileInput = document.getElementById('user-profile');
+        const userProfile = userProfileInput ? userProfileInput.value : "";
+
+        // Capturar tiempo de uso de IA
+        const timeUsingAiInput = document.querySelector('input[name="time_using_ai"]:checked');
+        const timeUsingAi = timeUsingAiInput ? timeUsingAiInput.value : "";
+
+        // Capturar frecuencia uso IA
+        const freqUsingAiInput = document.querySelector('input[name="frequency_using_ai"]:checked');
+        const freqUsingAi = freqUsingAiInput ? freqUsingAiInput.value : "";
+
         if (!userName && userNameInput) {
             alert('Por favor, introduce tu nombre.');
             return;
         }
 
+        // DESACTIVAR INMEDIATAMENTE el botón y marcar como enviando
+        isSubmitting = true;
         btn.disabled = true;
         btn.innerHTML = '<span>Guardando...</span>';
+        console.log(`🔒 [${transactionId}] Botón desactivado y flag isSubmitting = true`);
 
         // Construir payload
         const payload = {
             "Fecha": new Date().toLocaleString(),
-            "Usuario": userName
+            "Usuario": userName,
+            "Perfil": userProfile,
+            "Tiempo Uso IAG": timeUsingAi,
+            "Frecuencia Uso IAG": freqUsingAi
         };
 
         QUESTIONS.forEach(q => {
@@ -148,9 +215,11 @@ if (mainForm) {
             }
         });
 
+        console.log(`📦 [${transactionId}] Payload construido:`, payload);
+
         try {
             // PASO 1: Guardar en Supabase (Base de datos principal)
-            console.log("📊 Guardando en Supabase...");
+            console.log(`📊 [${transactionId}] Guardando en Supabase...`);
             btn.innerHTML = '<span>Guardando en base de datos...</span>';
 
             let supabaseRecord = null;
@@ -159,9 +228,9 @@ if (mainForm) {
             try {
                 supabaseRecord = await saveToSupabase(payload);
                 supabaseSaved = true;
-                console.log("✅ Datos guardados en Supabase:", supabaseRecord);
+                console.log(`✅ [${transactionId}] Datos guardados en Supabase:`, supabaseRecord);
             } catch (supabaseError) {
-                console.warn("⚠️ Supabase no disponible, continuando con Google Sheets:", supabaseError.message);
+                console.warn(`⚠️ [${transactionId}] Supabase no disponible, continuando con Google Sheets:`, supabaseError.message);
                 // Si Supabase falla, continuamos con Google Sheets
             }
 
@@ -176,6 +245,7 @@ if (mainForm) {
             // PASO 3: Enviar a Google Sheets (con reintentos)
             if (webhook) {
                 btn.innerHTML = '<span>Enviando a Google Sheets...</span>';
+                console.log(`📤 [${transactionId}] Iniciando envío a Google Sheets...`);
 
                 const maxRetries = 3;
                 let retryCount = 0;
@@ -183,7 +253,7 @@ if (mainForm) {
 
                 while (retryCount < maxRetries && !sheetSuccess) {
                     try {
-                        console.log(`📤 Intento ${retryCount + 1}/${maxRetries} de envío a Google Sheets...`);
+                        console.log(`📤 [${transactionId}] Intento ${retryCount + 1}/${maxRetries} de envío a Google Sheets...`);
 
                         await fetch(webhook, {
                             method: 'POST',
@@ -193,38 +263,39 @@ if (mainForm) {
                         });
 
                         sheetSuccess = true;
-                        console.log("✅ Datos enviados a Google Sheets");
+                        console.log(`✅ [${transactionId}] Datos enviados a Google Sheets`);
 
                         // Marcar como sincronizado en Supabase SOLO si se guardó exitosamente
                         if (supabaseSaved && supabaseRecord) {
                             await markAsSynced(supabaseRecord.id);
-                            console.log("✅ Registro marcado como sincronizado en Supabase");
+                            console.log(`✅ [${transactionId}] Registro marcado como sincronizado en Supabase`);
                         }
 
                     } catch (sheetError) {
                         retryCount++;
-                        console.warn(`❌ Intento ${retryCount} falló:`, sheetError);
+                        console.warn(`❌ [${transactionId}] Intento ${retryCount} falló:`, sheetError);
 
                         if (retryCount < maxRetries) {
                             // Esperar antes de reintentar (backoff exponencial)
                             const waitTime = Math.pow(2, retryCount) * 1000;
-                            console.log(`⏳ Esperando ${waitTime}ms antes de reintentar...`);
+                            console.log(`⏳ [${transactionId}] Esperando ${waitTime}ms antes de reintentar...`);
                             await new Promise(resolve => setTimeout(resolve, waitTime));
                         }
                     }
                 }
 
                 if (!sheetSuccess) {
-                    console.warn("⚠️ No se pudo enviar a Google Sheets después de 3 intentos");
+                    console.warn(`⚠️ [${transactionId}] No se pudo enviar a Google Sheets después de 3 intentos`);
                     if (supabaseSaved) {
-                        console.log("💾 Los datos están guardados en Supabase y se sincronizarán automáticamente en el próximo envío");
+                        console.log(`💾 [${transactionId}] Los datos están guardados en Supabase y se sincronizarán automáticamente en el próximo envío`);
                     }
                 }
             } else {
-                console.warn("⚠️ No hay webhook configurado para Google Sheets");
+                console.warn(`⚠️ [${transactionId}] No hay webhook configurado para Google Sheets`);
             }
 
             // PASO 4: Mostrar éxito al usuario
+            console.log(`✅ [${transactionId}] Proceso completado exitosamente`);
             setTimeout(() => {
                 const modal = document.getElementById('modal-success');
                 if (modal) modal.classList.remove('hidden');
@@ -235,14 +306,16 @@ if (mainForm) {
                 if (userNameInput) userNameInput.value = "";
                 document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
 
+                // RESETEAR FLAG para permitir nuevos envíos
+                isSubmitting = false;
                 btn.disabled = false;
                 btn.innerHTML = '<span>Enviar Resultados</span><i data-lucide="send" class="icon-right"></i>';
                 if (window.lucide) lucide.createIcons();
+                console.log(`🔓 [${transactionId}] Flag isSubmitting reseteado`);
             }, 600);
 
         } catch (err) {
-            console.error("❌ Error crítico en el envío:", err);
-
+            console.error(`❌ [${transactionId}] Error crítico en el envío:`, err);
             // Mostrar mensaje de error específico
             let errorMsg = 'Error al guardar los datos. ';
             if (err.message.includes('Supabase not configured')) {
@@ -253,9 +326,12 @@ if (mainForm) {
 
             alert(errorMsg);
 
+            // RESETEAR FLAG para permitir reintentos
+            isSubmitting = false;
             btn.disabled = false;
             btn.innerHTML = '<span>Enviar Resultados</span><i data-lucide="send" class="icon-right"></i>';
             if (window.lucide) lucide.createIcons();
+            console.log(`🔓 [${transactionId}] Flag isSubmitting reseteado después de error`);
         }
     });
 }
