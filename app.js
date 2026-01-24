@@ -220,7 +220,7 @@ if (mainForm) {
         try {
             // PASO 1: Guardar en Supabase (Base de datos principal)
             console.log(`📊 [${transactionId}] Guardando en Supabase...`);
-            btn.innerHTML = '<span>Guardando en base de datos...</span>';
+            btn.innerHTML = '<span>Guardando...</span>';
 
             let supabaseRecord = null;
             let supabaseSaved = false;
@@ -244,7 +244,7 @@ if (mainForm) {
 
             // PASO 3: Enviar a Google Sheets (con reintentos)
             if (webhook) {
-                btn.innerHTML = '<span>Enviando a Google Sheets...</span>';
+                btn.innerHTML = '<span>Enviando cuestionario...</span>';
                 console.log(`📤 [${transactionId}] Iniciando envío a Google Sheets...`);
 
                 const maxRetries = 3;
@@ -430,3 +430,4 @@ if (document.readyState === 'loading') {
 } else {
     startup();
 }
+
