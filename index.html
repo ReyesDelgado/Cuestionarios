@@ -71,64 +71,175 @@
                 </div>
 
                 <form id="matrix-form">
-                    <div class="user-info-section">
-                        <label for="user-name">Nombre:</label>
-                        <input type="text" id="user-name" placeholder="Escribe aquí tu nombre..." required>
+                    <div id="section-1" class="user-info-section">
+                        <!-- Tarjeta 1: Nombre -->
+                        <div class="info-card">
+                            <div class="form-group">
+                                <label for="user-name">Nombre:</label>
+                                <input type="text" id="user-name" placeholder="Escribe tu nombre..." required>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta 2: Género -->
+                        <div class="info-card">
+                            <div class="form-group">
+                                <label for="user-profile">Género:</label>
+                                <select id="user-profile">
+                                    <option value="" disabled selected>-- Selecciona una opción --</option>
+                                    <option value="Estudiante">Hombre</option>
+                                    <option value="Profesional">Mujer</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta 3: Tiempo IAG -->
+                        <div class="info-card">
+                            <div class="form-group-vertical">
+                                <label class="question-label">¿Cuánto tiempo llevas utilizando la IAG?</label>
+                                <div class="radio-list">
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="time_using_ai" value="Entre 1 y 6 meses">
+                                        <span>Entre 1 y 6 meses</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="time_using_ai" value="Entre 6 meses y 1 año">
+                                        <span>Entre 6 meses y 1 año</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="time_using_ai" value="Entre 1 y 3 años">
+                                        <span>Entre 1 y 3 años</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="time_using_ai" value="Más de 3 años">
+                                        <span>Más de 3 años</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Tarjeta 4: Frecuencia IAG -->
+                        <div class="info-card">
+                            <div class="form-group-vertical">
+                                <label class="question-label">¿Con qué frecuencia utilizas la IAG?</label>
+                                <div class="radio-list">
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="frequency_using_ai" value="Diariamente">
+                                        <span>Diariamente</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="frequency_using_ai" value="Varias veces a la semana">
+                                        <span>Varias veces a la semana</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="frequency_using_ai" value="Semanalmente">
+                                        <span>Semanalmente</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="frequency_using_ai" value="Raramente">
+                                        <span>Raramente</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta 4: Pregunta 4 -->
+                        <div class="info-card">
+                            <div class="form-group-vertical">
+                                <label class="question-label">¿Pregunta 4?</label>
+                                <div class="radio-list">
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 1">
+                                        <span>Respuesta 1</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 2">
+                                        <span>Respuesta 2</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 3">
+                                        <span>Respuesta 3</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 4">
+                                        <span>Respuesta 4</span>
+                                    </label>
+                                    <label class="radio-option-item">
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 5">
+                                        <span>Respuesta </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 0; text-align: center;">
+                            <button type="button" class="btn btn-primary btn-xl" onclick="validateAndNext()">
+                                <span>Siguiente</span>
+                                <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="matrix-header-sticky">
-                        <div class="col-category">PREGUNTA</div>
-                        <div class="col-past">PASADO</div>
-                        <div class="col-now">AHORA</div>
-                    </div>
+                    <div id="section-2" class="hidden fade-in">
 
-                    <!-- ESTE CONTENEDOR ES DONDE SE RENDERIZAN LAS PREGUNTAS -->
-                    <div id="questions-container">
-                        <!-- Las filas de preguntas se generan dinámicamente o se definen aquí -->
-                        <!-- Para mayor robustez, las definimos estáticamente sincronizadas con DEFAULT_QUESTIONS -->
+                        <div class="matrix-header-sticky">
+                            <div class="col-category">PREGUNTA</div>
+                            <div class="col-past">PASADO</div>
+                            <div class="col-now">AHORA</div>
+                        </div>
 
-                        <script>
-                            // Función auxiliar para generar el HTML de una fila de Likert
-                            function generateLikertRow(id, title) {
-                                let html = `
+                        <!-- ESTE CONTENEDOR ES DONDE SE RENDERIZAN LAS PREGUNTAS -->
+                        <div id="questions-container">
+                            <!-- Las filas de preguntas se generan dinámicamente o se definen aquí -->
+                            <!-- Para mayor robustez, las definimos estáticamente sincronizadas con DEFAULT_QUESTIONS -->
+
+                            <script>
+                                // Función auxiliar para generar el HTML de una fila de Likert
+                                function generateLikertRow(id, title) {
+                                    let html = `
                                 <div class="question-row" data-id="${id}">
                                     <div class="question-text">
                                         <span class="category-title">${title}</span>
                                     </div>
                                     <div class="side-past">
                                         <div class="likert-group">`;
-                                for (let i = 1; i <= 5; i++) {
-                                    html += `
+                                    for (let i = 1; i <= 5; i++) {
+                                        html += `
                                             <label class="likert-option">
                                                 <input type="radio" name="past_${id}" value="${i}" onchange="saveResponse('past_${id}', ${i})">
                                                 <div class="likert-circle"></div><span class="likert-label">${i}</span>
                                             </label>`;
-                                }
-                                html += `</div></div><div class="side-now"><div class="likert-group">`;
-                                for (let i = 1; i <= 5; i++) {
-                                    html += `
+                                    }
+                                    html += `</div></div><div class="side-now"><div class="likert-group">`;
+                                    for (let i = 1; i <= 5; i++) {
+                                        html += `
                                             <label class="likert-option">
                                                 <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
                                                 <div class="likert-circle"></div><span class="likert-label">${i}</span>
                                             </label>`;
+                                    }
+                                    html += `</div></div></div>`;
+                                    return html;
                                 }
-                                html += `</div></div></div>`;
-                                return html;
-                            }
 
-                            // Escribimos las preguntas iniciales para que el DOM esté listo antes de que app.js actue
-                            document.write(
-                                DEFAULT_QUESTIONS.map(q => generateLikertRow(q.id, q.category)).join('')
-                            );
-                        </script>
-                    </div>
+                                // Escribimos las preguntas iniciales para que el DOM esté listo antes de que app.js actue
+                                document.write(
+                                    DEFAULT_QUESTIONS.map(q => generateLikertRow(q.id, q.category)).join('')
+                                );
+                            </script>
+                        </div>
 
-                    <div class="form-actions">
-                        <button type="submit" id="submit-btn" class="btn btn-primary btn-xl">
-                            <span>Enviar Cuestionario</span>
-                            <i data-lucide="send" class="icon-right"></i>
-                        </button>
-                    </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary btn-xl" onclick="prevSection()">
+                                <i data-lucide="arrow-left"></i> <span>Volver</span>
+                            </button>
+                            <button type="submit" id="submit-btn" class="btn btn-primary btn-xl">
+                                <span>Enviar Cuestionario</span>
+                                <i data-lucide="send" class="icon-right"></i>
+                            </button>
+                        </div>
+                    </div> <!-- Fin Section 2 -->
                 </form>
             </section>
         </main>
@@ -138,23 +249,14 @@
             <div class="modal-content">
                 <i data-lucide="party-popper" class="icon-xl"></i>
                 <h2>¡Cuestionario enviado!</h2>
-                <p>El cuestionario ha sido enviado correctamente. ¡Gracias por su participación!</p>
-                <button class="btn btn-secondary" onclick="location.reload()">Volver a rellenar el cuestionario</button>
+                <p>El cuestionario ha sido enviado correctamente.</p>
+                <button class="btn btn-secondary" onclick="location.reload()">Nuevo Envío</button>
             </div>
         </div>
     </div>
 
     <script src="app.js"></script>
-    <script>if (window.lucide) lucide.createIcons();</script>
+    <script>if (window.lucidee.createIcons();</script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
