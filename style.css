@@ -140,14 +140,13 @@ body {
 }
 
 .user-info-section label {
-    font-weight: 700;
+    font-weight: 600;
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
     white-space: nowrap;
     min-width: 100px;
-    /* Ensure labels align nicely */
 }
 
 .user-info-section input,
@@ -205,6 +204,8 @@ body {
 }
 
 .radio-option-item {
+    font-weight: 400 !important;
+    /* NO BOLD en respuestas */
     display: inline-flex;
     /* Cambiado a inline-flex o flex con width auto */
     width: fit-content;
@@ -834,15 +835,24 @@ body {
     }
 
     .form-actions .btn {
-        flex: 1;
-        /* Ocupar espacio igual 50/50 */
         padding: 0.75rem 0.25rem;
-        /* Reducir padding horizontal drásticamente */
-        font-size: 0.85rem;
-        /* Letra más pequeña */
         justify-content: center;
         min-width: 0;
-        /* Permitir encogerse */
+    }
+
+    /* Botón Volver más pequeño */
+    .form-actions .btn-secondary {
+        flex: 1;
+        /* Menos ancho */
+        font-size: 0.75rem;
+    }
+
+    /* Botón Enviar más grande */
+    .form-actions .btn-primary {
+        flex: 2;
+        /* Más ancho */
+        font-size: 0.9rem;
+        font-weight: 700;
     }
 
     .form-actions .btn i {
