@@ -820,3 +820,41 @@ body {
         height: 16px;
     }
 }
+
+/* Ajuste de botones para que quepan en una línea en móvil */
+@media (max-width: 768px) {
+    .form-actions {
+        flex-direction: row !important;
+        /* Asegurar fila */
+        flex-wrap: nowrap !important;
+        /* No permitir salto */
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding: 0 0.5rem;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+        /* Ocupar espacio igual 50/50 */
+        padding: 0.75rem 0.25rem;
+        /* Reducir padding horizontal drásticamente */
+        font-size: 0.85rem;
+        /* Letra más pequeña */
+        justify-content: center;
+        min-width: 0;
+        /* Permitir encogerse */
+    }
+
+    .form-actions .btn i {
+        display: none;
+        /* Opcional: ocultar iconos si falta espacio, o reducirlos. Mejor reducirlos. */
+    }
+
+    /* Mostrar iconos pero pequeños */
+    .form-actions .btn i {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: 0 2px;
+    }
+}
