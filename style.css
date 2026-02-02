@@ -1,544 +1,1135 @@
-/**
- * MATRIX ANALYSIS - CORE LOGIC
- * Las preguntas se cargan desde el bloque script en index.html
- */
+/* Google Fonts - Outfit */
+/* Disclaimer de la Sección 1 */
+.section-disclaimer {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    background: #f0f7ff;
+    border-radius: 16px;
+    border: 1px dashed var(--accent);
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    animation: fadeInDown 0.8s ease-out;
+}
 
-// 2. Utilidades de Codificación Robustas
-function robustEncode(obj) {
-    try {
-        const str = JSON.stringify(obj);
-        return btoa(unescape(encodeURIComponent(str)));
-    } catch (e) {
-        return "";
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-function robustDecode(str) {
-    try {
-        if (!str) return null;
-        const cleaned = str.replace(/-/g, '+').replace(/_/g, '/').replace(/\s/g, '+');
-        const decoded = decodeURIComponent(escape(atob(cleaned)));
-        return JSON.parse(decoded);
-    } catch (e) {
-        return null;
+:root {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --accent: #5b67f1;
+    /* Azul vibrante de la imagen */
+    --accent-light: rgba(91, 103, 241, 0.15);
+    --accent-shadow: rgba(91, 103, 241, 0.4);
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --text-muted: #000000;
+    --border: #e2e8f0;
+    --radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Header */
+.app-header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1rem 0;
+}
+
+.app-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.icon-logo {
+    color: var(--accent);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.status-indicator {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.btn-icon-sq {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-icon-sq:hover {
+    background: var(--bg-main);
+    border-color: var(--accent);
+}
+
+/* Questionnaire Layout */
+.questionnaire-section {
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+}
+
+.survey-intro {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.survey-intro h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #000000;
+}
+
+.survey-intro p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+/* User Info Section (Contenedor transparente) */
+.user-info-section {
+    background: transparent;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+    /* Separación grande entre tarjetas */
+    box-shadow: none;
+}
+
+/* Tarjeta individual para cada pregunta */
+.info-card {
+    background: white;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.user-info-section label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+    white-space: nowrap;
+    min-width: 100px;
+}
+
+.user-info-section input,
+.user-info-section select {
+    flex: 1;
+    padding: 0.85rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-family: inherit;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    background: #f8fafc;
+}
+
+.user-info-section select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.user-info-section input:focus,
+.user-info-section select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+    box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+/* Vertical Radio Lists */
+/* Vertical Radio Lists */
+.form-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0;
+    /* Eliminado margen superior extra */
+}
+
+.form-group-vertical label.question-label {
+    font-weight: 700;
+    /* Negrita más intensa como en la imagen */
+    color: var(--text-primary);
+    font-size: 1.15rem;
+    /* Tamaño ligeramente superior para jerarquía */
+    margin-bottom: 1.25rem;
+    /* Espacio respirable antes de las opciones */
+    display: block;
+    text-align: justify;
+}
+
+.radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.radio-option-item {
+    font-weight: 400 !important;
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    line-height: normal;
+    color: var(--text-primary);
+    text-align: left;
+    justify-content: flex-start;
+}
+
+.radio-option-item input[type="radio"],
+.radio-option-item input[type="checkbox"] {
+    display: grid;
+    place-content: center;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    margin: 0;
+    border: 2px solid #5f6368;
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.radio-option-item input[type="radio"] {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 50%;
+    /* Círculo perfecto */
+}
+
+.radio-option-item input[type="checkbox"] {
+    width: 38px;
+    /* Un poco más grande como se solicitó */
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: 8px;
+    /* Cuadrado con esquinas redondeadas */
+}
+
+.radio-option-item input[type="radio"]:checked,
+.radio-option-item input[type="checkbox"]:checked {
+    border-color: var(--accent);
+    background: white;
+    /* Fondo blanco */
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px var(--accent-shadow);
+}
+
+.radio-option-item input[type="radio"]:checked::after,
+.radio-option-item input[type="checkbox"]:checked::after {
+    content: "";
+    width: 20px;
+    /* Punto azul más grande y protagónico */
+    height: 20px;
+    /* Punto azul */
+    border-radius: 50%;
+}
+
+.radio-option-item input[type="radio"]:checked::after {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.radio-option-item input[type="checkbox"]:checked::after {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+}
+
+
+/* Frequency Matrix (AI Tools) */
+.matrix-question-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    text-align: justify
+}
+
+.frequency-matrix {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.freq-header {
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    background: #f8fafc;
+    border-bottom: 2px solid var(--border);
+    padding: 0;
+}
+
+.freq-header div {
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.freq-header .cell-tool {
+    text-align: left;
+}
+
+.freq-row {
+    display: grid;
+    grid-template-columns: 2fr 4fr;
+    border-bottom: 1px solid var(--border);
+}
+
+.freq-row:last-child {
+    border-bottom: none;
+}
+
+.cell-label {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    background: #fbfcfd;
+}
+
+.options-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.input-otras {
+    width: 100%;
+    grid-column: span 4;
+    /* Ocupa las 4 columnas de la matriz */
+    padding: 1rem 1.25rem;
+    /* Un poco más de altura */
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    background-color: #fcfdfe;
+    transition: all 0.3s ease;
+    outline: none;
+    margin: 5px 0;
+}
+
+.input-otras:focus {
+    border-color: var(--accent);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px var(--accent-light);
+}
+
+.input-otras::placeholder {
+    color: #94a3b8;
+}
+
+.cell-option-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cell-option-mobile:hover {
+    background: #f1f5f9;
+}
+
+.cell-option-mobile input[type="radio"] {
+    display: grid;
+    place-content: center;
+    width: 32px;
+    /* Tamaño optimizado para fidelidad visual */
+    height: 32px;
+    min-width: 32px;
+    /* Blindaje contra distorsión */
+    min-height: 32px;
+    margin: 0;
+    border: 2px solid #5f6368;
+    /* Color gris de la imagen */
+    border-radius: 50%;
+    /* Círculo perfecto */
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    /* Evita que se aplaste */
+    position: relative;
+}
+
+.cell-option-mobile input[type="radio"]:checked {
+    transform: scale(1.1);
+}
+
+.cell-option-mobile input[type="radio"]:checked::after {
+    width: 6px;
+    height: 6px;
+}
+
+.opt-text {
+    display: none;
+    /* Oculto en desktop */
+}
+
+@media (max-width: 768px) {
+    .freq-header {
+        display: none;
+    }
+
+    .freq-row {
+        grid-template-columns: 1fr;
+        border-bottom: none;
+        margin-bottom: 1rem;
+    }
+
+    .cell-label {
+        background: #f1f5f9;
+        /* Color de fondo sutil para el encabezado de herramienta */
+        padding: 0.85rem 1.25rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--border);
+        border-radius: 12px 12px 0 0;
+    }
+
+    .options-group {
+        grid-template-columns: 1fr;
+        padding: 0;
+        background: white;
+        border: 1px solid var(--border);
+        border-top: none;
+        border-radius: 0 0 12px 12px;
+        margin-bottom: 12px;
+        justify-content: flext-start;
+        display: flex;
+        align-items: flex-start;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .cell-option-mobile {
+        justify-content: flex-start;
+        gap: 1.25rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .cell-option-mobile:last-child {
+        border-bottom: none;
+    }
+
+    .opt-text {
+        display: inline;
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #000000;
+    }
+
+    /* Estilo del radio button para móvil coincidente con la imagen */
+    .cell-option-mobile input[type="radio"] {
+        width: 38px;
+        height: 38px;
+        border: 1px solid #70757a;
+    }
+
+    .cell-option-mobile input[type="radio"]:checked {
+        border-color: var(--accent);
+    }
+
+    .cell-option-mobile input[type="radio"]:checked::after {
+        width: 22px;
+        height: 22px;
+        background-color: var(--accent);
     }
 }
 
-// 3. Inicialización de Estado sincronizada
-const urlParams = new URLSearchParams(window.location.search);
-const sharedD = urlParams.get('d');
-const sharedW = urlParams.get('w');
-
-let QUESTIONS = [];
-let responses = JSON.parse(localStorage.getItem('survey_responses')) || {};
-
-// Lógica de carga de preguntas (Prioriza URL, luego LocalStorage, luego DEFAULT en HTML)
-if (sharedD) {
-    const fromUrl = robustDecode(sharedD);
-    QUESTIONS = (fromUrl && Array.isArray(fromUrl)) ? fromUrl : [...DEFAULT_QUESTIONS];
-    if (sharedW) {
-        try { sessionStorage.setItem('temp_webhook', atob(sharedW.replace(/\s/g, '+'))); } catch (e) { }
-    }
-} else {
-    const local = localStorage.getItem('admin_questions');
-    QUESTIONS = local ? JSON.parse(local) : [...DEFAULT_QUESTIONS];
+.matrix-header-sticky,
+.matrix-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 18px 18px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: 3px solid var(--accent);
+    text-align: left;
+    /* Alineación a la izquierda para encabezados */
 }
 
-// 4. Renderizado del Cuestionario
-function renderQuestions() {
-    const container = document.getElementById('questions-container');
-    if (!container) return;
-
-    container.innerHTML = QUESTIONS.map(q => `
-        <div class="question-row fade-in" data-id="${q.id}">
-            <div class="question-text">
-                <span class="category-title">${q.category}</span>
-                <span class="question-subtext">${q.subtext || ''}</span>
-            </div>
-            
-            <div class="side-past">
-                <div class="likert-group">
-                    ${[1, 2, 3, 4, 5].map(val => `
-                        <label class="likert-option">
-                            <input type="radio" name="past_${q.id}" value="${val}" 
-                                ${responses[`past_${q.id}`] == val ? 'checked' : ''} 
-                                onchange="saveResponse('past_${q.id}', ${val})">
-                            <div class="likert-circle"></div>
-                            <span class="likert-label">${val}</span>
-                        </label>
-                    `).join('')}
-                </div>
-            </div>
-        </div>
-    `).join('');
-
-    if (window.lucide) lucide.createIcons();
-
-    // Restaurar inputs de la Sección 1
-    restoreSection1Inputs();
+/* Contenedor para agrupar elementos pegajosos (Desktop y Móvil) */
+.mobile-sticky-block {
+    position: sticky;
+    top: 73px;
+    /* Justo debajo del header principal en Desktop */
+    z-index: 100;
+    background: white;
+    /* Color sólido para evitar transparencias al hacer scroll */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 18px 18px 0 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-bottom: none;
 }
 
-// Persistencia de inputs de la Sección 1
-function restoreSection1Inputs() {
-    const inputs = {
-        'user-name': 'value',
-        'user-surname': 'value',
-        'user-profile': 'value',
-        'freq_otras': 'value'
-    };
-
-    for (let id in inputs) {
-        const val = localStorage.getItem(`input_${id}`);
-        if (val) document.getElementById(id).value = val;
-    }
-
-    // Radios y Checkboxes
-    const names = ['time_using_ai', 'frequency_using_ai', 'ai_usage'];
-    // Herramientas IA
-    const tools = ['chatgpt', 'copilot', 'gemini', 'claude', 'canva', 'gamma', 'perplexity', 'dalle', 'notebooklm', 'otras'];
-    tools.forEach(t => names.push(`freq_${t}`));
-
-    names.forEach(name => {
-        const saved = localStorage.getItem(`input_${name}`);
-        if (saved) {
-            const values = saved.split('|||');
-            values.forEach(v => {
-                const input = document.querySelector(`input[name="${name}"][value="${v}"]`);
-                if (input) input.checked = true;
-            });
-        }
-    });
+/* Recordatorio pegajoso */
+.sticky-reminder {
+    background: white;
+    padding: 15px 25px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #000;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
 }
 
-// Listener global para guardar cambios en tiempo real
-document.addEventListener('change', (e) => {
-    const el = e.target;
-    if (el.id === 'user-name' || el.id === 'user-surname' || el.id === 'user-profile') {
-        localStorage.setItem(`input_${el.id}`, el.value);
-    } else if (el.name) {
-        // Para radios y checkboxes del mismo name
-        if (el.type === 'radio') {
-            localStorage.setItem(`input_${el.name}`, el.value);
-        } else if (el.type === 'checkbox') {
-            const checked = Array.from(document.querySelectorAll(`input[name="${el.name}"]:checked`))
-                .map(i => i.value);
-            localStorage.setItem(`input_${el.name}`, checked.join('|||'));
-        }
-    }
-});
-
-// Listener para el input de texto Nombre (keyup para mayor fluidez)
-document.addEventListener('keyup', (e) => {
-    if (e.target.id === 'user-name') {
-        localStorage.setItem(`input_user-name`, e.target.value);
-    } else if (e.target.id === 'user-surname') {
-        localStorage.setItem(`input_user-surname`, e.target.value);
-    } else if (e.target.id === 'freq_otras') {
-        localStorage.setItem(`input_freq_otras`, e.target.value);
-    }
-});
-
-// 5. Gestión de Respuestas
-window.saveResponse = function (key, value) {
-    responses[key] = value;
-    localStorage.setItem('survey_responses', JSON.stringify(responses));
-
-    const saveStatus = document.getElementById('save-status');
-    if (saveStatus) {
-        saveStatus.innerHTML = '<i data-lucide="refresh-cw" class="icon-small spin"></i> Guardando...';
-        if (window.lucide) lucide.createIcons();
-        setTimeout(() => {
-            saveStatus.innerHTML = '<i data-lucide="check-circle" class="icon-small"></i> Guardado automáticamente';
-            if (window.lucide) lucide.createIcons();
-        }, 800);
-    }
-};
-
-// 6. Envío Robusto a Supabase + Google Sheets
-// Flag global para prevenir envíos duplicados
-let isSubmitting = false;
-
-// Función para navegar entre secciones
-window.validateAndNext = function () {
-    const userName = document.getElementById('user-name').value.trim();
-    const userSurname = document.getElementById('user-surname').value.trim();
-    const userProfile = document.getElementById('user-profile').value;
-    const timeUsingAi = document.querySelector('input[name="time_using_ai"]:checked');
-    const freqUsingAi = document.querySelector('input[name="frequency_using_ai"]:checked');
-    const aiUsage = document.querySelectorAll('input[name="ai_usage"]:checked');
-
-    if (!userName) {
-        alert('Por favor, escribe tu nombre.');
-        document.getElementById('user-name').focus();
-        return;
-    }
-    if (!userSurname) {
-        alert('Por favor, escribe tus apellidos.');
-        document.getElementById('user-surname').focus();
-        return;
-    }
-    if (!userProfile) {
-        alert('Por favor, selecciona tu género.');
-        document.getElementById('user-profile').focus();
-        return;
-    }
-    if (!timeUsingAi) {
-        alert('Por favor, indica cuánto tiempo llevas utilizando la IAG.');
-        return;
-    }
-    if (!freqUsingAi) {
-        alert('Por favor, indica con qué frecuencia utilizas la IAG.');
-        return;
-    }
-    if (aiUsage.length === 0) {
-        alert('Por favor, indica para qué usas la IA (puedes marcar varias opciones).');
-        return;
-    }
-
-    // Validar matriz de frecuencia (Excepto "otras" que es opcional)
-    const tools = ['chatgpt', 'copilot', 'gemini', 'claude', 'canva', 'gamma', 'perplexity', 'dalle', 'notebooklm'];
-    for (const tool of tools) {
-        const selected = document.querySelector(`input[name="freq_${tool}"]:checked`);
-        if (!selected) {
-            alert(`Por favor, selecciona la frecuencia para la herramienta: ${tool.charAt(0).toUpperCase() + tool.slice(1)}`);
-            return;
-        }
-    }
-
-    // Si todo es válido, cambiar de sección
-    document.getElementById('section-1').classList.add('hidden');
-    document.getElementById('section-2').classList.remove('hidden');
-    window.scrollTo(0, 0); // Scroll al inicio para ver las preguntas
-};
-
-window.prevSection = function () {
-    document.getElementById('section-2').classList.add('hidden');
-    document.getElementById('section-1').classList.remove('hidden');
-    window.scrollTo(0, 0);
-};
-
-const mainForm = document.getElementById('matrix-form');
-if (mainForm) {
-    mainForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // PROTECCIÓN CONTRA DUPLICADOS: Verificar si ya hay un envío en progreso
-        if (isSubmitting) {
-            console.warn("⚠️ Envío ya en progreso. Ignorando evento duplicado.");
-            return;
-        }
-
-        // Generar ID único para esta transacción (para debugging)
-        const transactionId = `tx_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        console.log(`📝 [${transactionId}] Evento submit capturado. Validando...`);
-
-        const required = QUESTIONS.flatMap(q => [`past_${q.id}`]);
-        const missing = required.filter(k => !responses[k]);
-
-        if (missing.length > 0) {
-            alert('Por favor, selecciona una opción para todas las categorías antes de enviar.');
-            return;
-        }
-
-        const btn = document.getElementById('submit-btn');
-        const userNameInput = document.getElementById('user-name');
-        const userName = userNameInput ? userNameInput.value.trim() : "Anónimo";
-
-        const userSurnameInput = document.getElementById('user-surname');
-        const userSurname = userSurnameInput ? userSurnameInput.value.trim() : "";
-
-        const userProfileInput = document.getElementById('user-profile');
-        const userProfile = userProfileInput ? userProfileInput.value : "";
-
-        // Capturar tiempo de uso de IA
-        const timeUsingAiInput = document.querySelector('input[name="time_using_ai"]:checked');
-        const timeUsingAi = timeUsingAiInput ? timeUsingAiInput.value : "";
-
-        // Capturar frecuencia uso IA
-        const freqUsingAiInput = document.querySelector('input[name="frequency_using_ai"]:checked');
-        const freqUsingAi = freqUsingAiInput ? freqUsingAiInput.value : "";
-
-        // Capturar usos de IA (Multiselección)
-        const aiUsageNodes = document.querySelectorAll('input[name="ai_usage"]:checked');
-        const aiUsage = Array.from(aiUsageNodes).map(n => n.value).join(', ');
-
-        if (!userName && userNameInput) {
-            alert('Por favor, introduce tu nombre.');
-            return;
-        }
-
-        // DESACTIVAR INMEDIATAMENTE el botón y marcar como enviando
-        isSubmitting = true;
-        btn.disabled = true;
-        btn.innerHTML = '<span>Guardando...</span>';
-        console.log(`🔒 [${transactionId}] Botón desactivado y flag isSubmitting = true`);
-
-        // Construir payload en el ORDEN EXACTO del cuestionario
-        const payload = {
-            "Fecha": new Date().toLocaleString(),
-            "Nombre": userName,
-            "Apellidos": userSurname,
-            "Género": userProfile,
-            "¿Cuánto tiempo llevas utilizando la IAG?": timeUsingAi,
-            "¿Con qué frecuencia usas la IAG?": freqUsingAi
-        };
-
-        // 1. Matriz de frecuencia de herramientas (en orden)
-        const tools = ['chatgpt', 'copilot', 'gemini', 'claude', 'canva', 'gamma', 'perplexity', 'dalle', 'notebooklm'];
-        tools.forEach(tool => {
-            const val = document.querySelector(`input[name="freq_${tool}"]:checked`);
-            if (val) {
-                const toolName = tool === 'dalle' ? 'Dall-e' : tool.charAt(0).toUpperCase() + tool.slice(1);
-                payload[`Frecuencia_${toolName}`] = val.value;
-            }
-        });
-
-        // 1.1 Manejo especial para "Otras" (Campo de texto)
-        const otrasVal = document.getElementById('freq_otras')?.value;
-        if (otrasVal) {
-            payload[`Frecuencia_Otras`] = otrasVal;
-        }
-
-        // 2. ¿Para qué usas la IA? (Multiselección)
-        payload["¿Para qué usas la IA?"] = aiUsage;
-
-        // 3. Items de valoración (1-55) con nombres completos (Para Sheets y Supabase)
-        QUESTIONS.forEach((q) => {
-            const pv = responses[`past_${q.id}`];
-            if (pv !== undefined) {
-                payload[`${q.category}`] = pv;
-            }
-        });
-
-        console.log(`📦 [${transactionId}] Payload construido:`, payload);
-
-        try {
-            // PASO 1: Guardar en Supabase (Base de datos principal)
-            console.log(`📊 [${transactionId}] Guardando en Supabase...`);
-            btn.innerHTML = '<span>Guardando...</span>';
-
-            let supabaseRecord = null;
-            let supabaseSaved = false;
-
-            try {
-                supabaseRecord = await saveToSupabase(payload);
-                supabaseSaved = true;
-                console.log(`✅ [${transactionId}] Datos guardados en Supabase:`, supabaseRecord);
-            } catch (supabaseError) {
-                console.warn(`⚠️ [${transactionId}] Supabase no disponible, continuando con Google Sheets:`, supabaseError.message);
-                // Si Supabase falla, continuamos con Google Sheets
-            }
-
-            // PASO 2: Intentar sincronizar registros pendientes
-            const webhook = (typeof WEBHOOK_URL !== 'undefined' ? WEBHOOK_URL : '') ||
-                sessionStorage.getItem('temp_webhook') ||
-                localStorage.getItem('google_sheet_webhook');
-
-            // NOTA: NO sincronizamos registros pendientes aquí para evitar duplicados.
-            // Los registros pendientes se sincronizarán automáticamente en el próximo envío.
-
-            // PASO 3: Enviar a Google Sheets (con reintentos)
-            if (webhook) {
-                btn.innerHTML = '<span>Enviando cuestionario...</span>';
-                // El webhook de Google Apps Script ahora gestiona tanto la hoja de cálculo como el envío del email con el adjunto .txt
-                console.log(`📤 [${transactionId}] Iniciando envío a Google Sheets y Backup Gmail...`);
-
-                const maxRetries = 3;
-                let retryCount = 0;
-                let sheetSuccess = false;
-
-                while (retryCount < maxRetries && !sheetSuccess) {
-                    try {
-                        console.log(`📤 [${transactionId}] Intento ${retryCount + 1}/${maxRetries} de envío a Google Sheets...`);
-
-                        await fetch(webhook, {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            cache: 'no-cache',
-                            body: JSON.stringify(payload)
-                        });
-
-                        sheetSuccess = true;
-                        console.log(`✅ [${transactionId}] Datos enviados a Google Sheets`);
-
-                        // Marcar como sincronizado en Supabase SOLO si se guardó exitosamente
-                        if (supabaseSaved && supabaseRecord) {
-                            await markAsSynced(supabaseRecord.id);
-                            console.log(`✅ [${transactionId}] Registro marcado como sincronizado en Supabase`);
-                        }
-
-                    } catch (sheetError) {
-                        retryCount++;
-                        console.warn(`❌ [${transactionId}] Intento ${retryCount} falló:`, sheetError);
-
-                        if (retryCount < maxRetries) {
-                            // Esperar antes de reintentar (backoff exponencial)
-                            const waitTime = Math.pow(2, retryCount) * 1000;
-                            console.log(`⏳ [${transactionId}] Esperando ${waitTime}ms antes de reintentar...`);
-                            await new Promise(resolve => setTimeout(resolve, waitTime));
-                        }
-                    }
-                }
-
-                if (!sheetSuccess) {
-                    console.warn(`⚠️ [${transactionId}] No se pudo enviar a Google Sheets después de 3 intentos`);
-                    if (supabaseSaved) {
-                        console.log(`💾 [${transactionId}] Los datos están guardados en Supabase y se sincronizarán automáticamente en el próximo envío`);
-                    }
-                }
-            } else {
-                console.warn(`⚠️ [${transactionId}] No hay webhook configurado para Google Sheets`);
-            }
-
-            // PASO 4: Mostrar éxito al usuario
-            console.log(`✅ [${transactionId}] Proceso completado exitosamente`);
-            setTimeout(() => {
-                const modal = document.getElementById('modal-success');
-                if (modal) modal.classList.remove('hidden');
-
-                // Limpieza profunda de persistencia
-                localStorage.removeItem('survey_responses');
-                responses = {};
-
-                // Eliminar todos los inputs guardados de la Sección 1
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('input_')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-
-                // Limpiar UI
-                if (userNameInput) userNameInput.value = "";
-                if (userSurnameInput) userSurnameInput.value = "";
-                const otrasInput = document.getElementById('freq_otras');
-                if (otrasInput) otrasInput.value = "";
-
-                const userProfileSelect = document.getElementById('user-profile');
-                if (userProfileSelect) userProfileSelect.selectedIndex = 0;
-
-                document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(r => r.checked = false);
-
-                // RESETEAR FLAG para permitir nuevos envíos
-                isSubmitting = false;
-                btn.disabled = false;
-                btn.innerHTML = '<span>Enviar Resultados</span><i data-lucide="send" class="icon-right"></i>';
-                if (window.lucide) lucide.createIcons();
-                console.log(`🔓 [${transactionId}] Flag isSubmitting reseteado`);
-            }, 600);
-
-        } catch (err) {
-            console.error(`❌ [${transactionId}] Error crítico en el envío:`, err);
-            // Mostrar mensaje de error específico
-            let errorMsg = 'Error al guardar los datos. ';
-            if (err.message.includes('Supabase not configured')) {
-                errorMsg += 'Por favor, configura Supabase en supabase-config.js';
-            } else {
-                errorMsg += 'Por favor, verifica tu conexión e intenta de nuevo.';
-            }
-
-            alert(errorMsg);
-
-            // RESETEAR FLAG para permitir reintentos
-            isSubmitting = false;
-            btn.disabled = false;
-            btn.innerHTML = '<span>Enviar Resultados</span><i data-lucide="send" class="icon-right"></i>';
-            if (window.lucide) lucide.createIcons();
-            console.log(`🔓 [${transactionId}] Flag isSubmitting reseteado después de error`);
-        }
-    });
+/* Encabezado de la matriz */
+.matrix-header-sticky {
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #000000;
+    background: white;
+    /* Los bordes y padding se heredan de la definición compartida de .matrix-header-sticky */
+    border: none !important;
+    /* Quitamos bordes individuales para no duplicar con el contenedor */
+    border-bottom: 3px solid var(--accent) !important;
+    border-radius: 0 !important;
 }
 
-// Función auxiliar para enviar a Google Sheets
-async function sendToGoogleSheets(webhook, payload) {
-    return fetch(webhook, {
-        method: 'POST',
-        mode: 'no-cors',
-        cache: 'no-cache',
-        body: JSON.stringify(payload)
-    });
+/* Alineación de los grupos de radio buttons */
+.rating-group {
+    display: flex;
+    justify-content: space-around;
+    /* Distribuye los números 1-5 uniformemente */
+    padding: 0 10px;
 }
 
-// 7. Funciones Admin
-window.toggleAdmin = function () {
-    const panel = document.getElementById('admin-panel');
-    if (panel) {
-        panel.classList.toggle('hidden');
-        renderAdminQuestions();
-        const urlIn = document.getElementById('webhook-url');
-        if (urlIn) {
-            urlIn.value = localStorage.getItem('google_sheet_webhook') ||
-                (typeof WEBHOOK_URL !== 'undefined' ? WEBHOOK_URL : '');
-        }
+.rating-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* El círculo (basado en la imagen) */
+.rating-item i {
+    width: 22px;
+    height: 22px;
+    border: 1px solid #cbd5e1;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    background: white;
+}
+
+.rating-item span {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Estilo para cuando se selecciona */
+.rating-item input:checked+i {
+    background-color: #5b67f1;
+    border-color: #5b67f1;
+    box-shadow: inset 0 0 0 3px white;
+}
+
+/* Esconder el radio button original */
+.rating-item input {
+    display: none;
+}
+
+.col-now {
+    color: #000000;
+    text-align: center;
+}
+
+.col-past {
+    text-align: center;
+}
+
+#questions-container {
+    background: white;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.question-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr;
+    align-items: center;
+    padding: 2.5rem 2.5rem;
+    border: 1px solid var(--border);
+    border-top: none;
+    transition: background 0.2s;
+}
+
+.question-row:hover {
+    background: #fcfdfe;
+}
+
+.question-text {
+    text-align: left;
+    padding-right: 1.5rem;
+}
+
+.category-title {
+    display: block;
+    font-size: 1.1rem;
+    /* Reducido de 1.3rem */
+    color: #000000;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+}
+
+.question-subtext {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+/* Likert Scales */
+.likert-group {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 1rem;
+}
+
+.likert-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.likert-circle {
+    width: 36px;
+    height: 36px;
+    border: 2px solid rgb(95, 99, 104);
+    border-radius: 50%;
+    background: white;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.likert-label {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.likert-option input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+
+/* Checked State */
+.likert-option input:checked+.likert-circle {
+    border-color: var(--accent);
+    background: white;
+    /* Fondo blanco */
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px var(--accent-shadow);
+}
+
+.likert-option input:checked+.likert-circle::after {
+    content: "";
+    width: 20px;
+    /* Punto azul más grande y protagónico */
+    height: 20px;
+    background: var(--accent);
+    /* Punto azul */
+    border-radius: 50%;
+}
+
+.likert-option input:checked~.likert-label {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* Admin Panel Styling */
+.admin-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-top: 2rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+.admin-setting-group {
+    margin-bottom: 1.5rem;
+}
+
+.admin-setting-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.admin-setting-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.admin-list {
+    max-height: 350px;
+    overflow-y: auto;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+}
+
+.admin-q-item {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr auto;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #4c51bf;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-main);
+    border-color: var(--accent);
+}
+
+.btn-xl {
+    padding: 1.25rem 3rem;
+    font-size: 1.1rem;
+}
+
+.danger-text {
+    color: #e53e3e !important;
+}
+
+/* Utils */
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-};
 
-window.saveWebhookUrl = (url) => localStorage.setItem('google_sheet_webhook', url);
-
-function renderAdminQuestions() {
-    const list = document.getElementById('admin-questions-list');
-    if (!list) return;
-    list.innerHTML = QUESTIONS.map((q, i) => `
-        <div class="admin-q-item">
-            <input type="text" value="${q.category}" onchange="updateQ(${i}, 'category', this.value)" placeholder="Categoría">
-            <input type="text" value="${q.subtext || ''}" onchange="updateQ(${i}, 'subtext', this.value)" placeholder="Descripción">
-            <button onclick="removeQ(${i})" class="btn-icon">×</button>
-        </div>
-    `).join('');
-}
-
-window.addQuestion = () => {
-    QUESTIONS.push({ id: 'q' + Date.now(), category: 'Nueva Categoría', subtext: 'Descripción' });
-    localSaveQuestions();
-    renderAdminQuestions();
-    renderQuestions();
-};
-
-window.removeQ = (i) => {
-    QUESTIONS.splice(i, 1);
-    localSaveQuestions();
-    renderAdminQuestions();
-    renderQuestions();
-};
-
-window.updateQ = (i, f, v) => {
-    QUESTIONS[i][f] = v;
-    localSaveQuestions();
-    renderQuestions();
-};
-
-function localSaveQuestions() {
-    localStorage.setItem('admin_questions', JSON.stringify(QUESTIONS));
-}
-
-window.resetQuestions = () => {
-    if (confirm('¿Reiniciar a valores por defecto?')) {
-        QUESTIONS = [...DEFAULT_QUESTIONS];
-        localStorage.removeItem('admin_questions');
-        renderAdminQuestions();
-        renderQuestions();
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-};
-
-window.generateShareLink = () => {
-    const d = robustEncode(QUESTIONS);
-    const w = localStorage.getItem('google_sheet_webhook');
-    const url = window.location.origin + window.location.pathname + '?d=' + d + (w ? '&w=' + btoa(w) : '');
-    navigator.clipboard.writeText(url).then(() => {
-        const btn = document.getElementById('gen-link-btn');
-        const old = btn.innerHTML;
-        btn.innerHTML = 'Copiado ✅';
-        setTimeout(() => { btn.innerHTML = old; if (window.lucide) lucide.createIcons(); }, 2000);
-    });
-};
-
-function startup() {
-    const gear = document.getElementById('admin-gear');
-    if (gear) gear.style.display = sharedD ? 'none' : 'flex';
-    renderQuestions();
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startup);
-} else {
-    startup();
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+    /* Para móviles */
+}
+
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: white;
+    padding: 3rem;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 450px;
+}
+
+.icon-xl {
+    width: 64px;
+    height: 64px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Optimizado */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* Ajuste radical de la grilla para móvil */
+    .matrix-header-sticky,
+    .question-row {
+        grid-template-columns: 1fr 170px;
+        /* Pregunta | Pasado (Ampliado para círculos más grandes) */
+        gap: 0.5rem;
+        padding: 1rem 0.5rem;
+    }
+
+    /* Cabecera fija móvil REFINADA */
+    .mobile-sticky-block {
+        top: 0;
+        /* Al inicio de la pantalla en móvil */
+        z-index: 120;
+    }
+
+    .sticky-reminder {
+        position: relative;
+        /* Ya no es sticky individual */
+        top: auto;
+        font-size: 0.85rem;
+        padding: 12px 15px;
+        background: white;
+        border-bottom: 1px solid var(--border);
+        color: #000
+    }
+
+    .matrix-header-sticky {
+        position: relative;
+        /* Ya no es sticky individual */
+        top: auto;
+        display: grid;
+        font-size: 0.7rem;
+        padding: 10px 5px;
+        border-radius: 0;
+        text-align: center;
+        background: white;
+        border-top: none;
+    }
+
+    .col-category {
+        display: flex;
+        justify-content: flex-start !important;
+        /* Forzar alineación a la izquierda */
+        align-items: center;
+        text-align: left !important;
+        padding-left: 0.5rem;
+        width: 100%;
+    }
+
+    /* Asegurar que Pasado esté centrado */
+    .col-past {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .question-row {
+        align-items: flex-start;
+        /* Alinear arriba para preguntas largas */
+    }
+
+    .question-text {
+        padding-right: 5px;
+    }
+
+    .category-title {
+        font-size: 0.95rem;
+        /* Letra más pequeña */
+        line-height: 1.3;
+    }
+
+    .question-subtext {
+        font-size: 0.8rem;
+    }
+
+    /* Compactar escalas Likert - Ahora con círculos grandes y cómodos */
+    .likert-group {
+        padding: 0;
+        gap: 4px;
+    }
+
+    .likert-circle {
+        width: 30px;
+        /* Círculos más grandes para táctil */
+        height: 30px;
+        border-width: 1.5px;
+    }
+
+    .likert-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    /* Estado seleccionado ajustado */
+    .likert-option input:checked+.likert-circle {
+        transform: scale(1.05);
+    }
+
+    .likert-option input:checked+.likert-circle::after {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Ocultar elementos decorativos en móvil */
+    .survey-intro h1 {
+        font-size: 1.8rem;
+    }
+
+    .app-header {
+        padding: 0.5rem 0;
+        position: relative;
+        /* YA NO ES STICKY EN MÓVIL PARA AHORRAR ESPACIO */
+        top: auto;
+        height: auto;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+    }
+
+    .user-info-section {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .user-info-section label,
+    .question-label {
+        white-space: normal !important;
+        text-align: justify
+    }
+
+    /* Reducir radios en móvil para coincidir con Likert */
+    .radio-option-item input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        border-width: 1px;
+    }
+
+    /* Ajuste radical de la grilla para móvil */
+    .matrix-header-sticky,
+    .question-row {
+        grid-template-columns: 1fr 140px;
+        /* Pregunta | Pasado */
+        grid-gap: 12px;
+        align-items: center;
+    }
+
+    .side-past,
+    .col-past {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* Ajustes para pantallas MUY pequeñas (iPhone SE, etc) */
+@media (max-width: 380px) {
+
+    .matrix-header-sticky,
+    .question-row {
+        grid-template-columns: 1fr 120px;
+        /* Aún más compacto */
+    }
+
+    .likert-circle {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Ajuste de botones para que quepan en una línea en móvil */
+@media (max-width: 768px) {
+    .form-actions {
+        flex-direction: row !important;
+        /* Asegurar fila */
+        flex-wrap: nowrap !important;
+        /* No permitir salto */
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding: 0 0.5rem;
+    }
+
+    .form-actions .btn {
+        padding: 0.75rem 0.25rem;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    /* Botón Volver más pequeño */
+    .form-actions .btn-secondary {
+        flex: 1;
+        /* Menos ancho */
+        font-size: 0.75rem;
+    }
+
+    /* Botón Enviar más grande */
+    .form-actions .btn-primary {
+        flex: 2;
+        /* Más ancho */
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .form-actions .btn i {
+        display: none;
+        /* Opcional: ocultar iconos si falta espacio, o reducirlos. Mejor reducirlos. */
+    }
+
+    /* Mostrar iconos pero pequeños */
+    .form-actions .btn i {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: 0 2px;
+    }
 }
