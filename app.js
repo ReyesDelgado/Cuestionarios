@@ -69,74 +69,25 @@ function renderQuestions() {
                     `).join('')}
                 </div>
             </div>
+
+            <div class="side-now">
+                <div class="likert-group">
+                    ${[1, 2, 3, 4, 5].map(val => `
+                        <label class="likert-option">
+                            <input type="radio" name="now_${q.id}" value="${val}" 
+                                ${responses[`now_${q.id}`] == val ? 'checked' : ''} 
+                                onchange="saveResponse('now_${q.id}', ${val})">
+                            <div class="likert-circle"></div>
+                            <span class="likert-label">${val}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
         </div>
     `).join('');
 
     if (window.lucide) lucide.createIcons();
-
-    // Restaurar inputs de la Sección 1
-    restoreSection1Inputs();
 }
-
-// Persistencia de inputs de la Sección 1
-function restoreSection1Inputs() {
-    const inputs = {
-        'user-name': 'value',
-        'user-surname': 'value',
-        'user-profile': 'value',
-        'freq_otras': 'value'
-    };
-
-    for (let id in inputs) {
-        const val = localStorage.getItem(`input_${id}`);
-        if (val) document.getElementById(id).value = val;
-    }
-
-    // Radios y Checkboxes
-    const names = ['time_using_ai', 'frequency_using_ai', 'ai_usage'];
-    // Herramientas IA
-    const tools = ['chatgpt', 'copilot', 'gemini', 'claude', 'canva', 'gamma', 'perplexity', 'dalle', 'notebooklm', 'otras'];
-    tools.forEach(t => names.push(`freq_${t}`));
-
-    names.forEach(name => {
-        const saved = localStorage.getItem(`input_${name}`);
-        if (saved) {
-            const values = saved.split('|||');
-            values.forEach(v => {
-                const input = document.querySelector(`input[name="${name}"][value="${v}"]`);
-                if (input) input.checked = true;
-            });
-        }
-    });
-}
-
-// Listener global para guardar cambios en tiempo real
-document.addEventListener('change', (e) => {
-    const el = e.target;
-    if (el.id === 'user-name' || el.id === 'user-surname' || el.id === 'user-profile') {
-        localStorage.setItem(`input_${el.id}`, el.value);
-    } else if (el.name) {
-        // Para radios y checkboxes del mismo name
-        if (el.type === 'radio') {
-            localStorage.setItem(`input_${el.name}`, el.value);
-        } else if (el.type === 'checkbox') {
-            const checked = Array.from(document.querySelectorAll(`input[name="${el.name}"]:checked`))
-                .map(i => i.value);
-            localStorage.setItem(`input_${el.name}`, checked.join('|||'));
-        }
-    }
-});
-
-// Listener para el input de texto Nombre (keyup para mayor fluidez)
-document.addEventListener('keyup', (e) => {
-    if (e.target.id === 'user-name') {
-        localStorage.setItem(`input_user-name`, e.target.value);
-    } else if (e.target.id === 'user-surname') {
-        localStorage.setItem(`input_user-surname`, e.target.value);
-    } else if (e.target.id === 'freq_otras') {
-        localStorage.setItem(`input_freq_otras`, e.target.value);
-    }
-});
 
 // 5. Gestión de Respuestas
 window.saveResponse = function (key, value) {
@@ -160,10 +111,21 @@ let isSubmitting = false;
 
 // Función para navegar entre secciones
 window.validateAndNext = function () {
+    const userName = document.getElementById('user-name').value.trim();
+    const userProfile = document.getElementById('user-profile').value;
     const timeUsingAi = document.querySelector('input[name="time_using_ai"]:checked');
     const freqUsingAi = document.querySelector('input[name="frequency_using_ai"]:checked');
-    const aiUsage = document.querySelectorAll('input[name="ai_usage"]:checked');
 
+    if (!userName) {
+        alert('Por favor, escribe tu nombre.');
+        document.getElementById('user-name').focus();
+        return;
+    }
+    if (!userProfile) {
+        alert('Por favor, selecciona tu género.');
+        document.getElementById('user-profile').focus();
+        return;
+    }
     if (!timeUsingAi) {
         alert('Por favor, indica cuánto tiempo llevas utilizando la IAG.');
         return;
@@ -172,52 +134,16 @@ window.validateAndNext = function () {
         alert('Por favor, indica con qué frecuencia utilizas la IAG.');
         return;
     }
-    if (aiUsage.length === 0) {
-        alert('Por favor, indica para qué usas la IA (puedes marcar varias opciones).');
-        return;
-    }
 
-    // Validar matriz de frecuencia (Excepto "otras" que es opcional)
-    const tools = ['chatgpt', 'copilot', 'gemini', 'claude', 'canva', 'gamma', 'perplexity', 'dalle', 'notebooklm'];
-    for (const tool of tools) {
-        const selected = document.querySelector(`input[name="freq_${tool}"]:checked`);
-        if (!selected) {
-            alert(`Por favor, selecciona la frecuencia para la herramienta: ${tool.charAt(0).toUpperCase() + tool.slice(1)}`);
-            return;
-        }
-    }
-
-    // Si todo es válido, cambiar de sección 1 -> 2
+    // Si todo es válido, cambiar de sección
     document.getElementById('section-1').classList.add('hidden');
     document.getElementById('section-2').classList.remove('hidden');
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // Scroll al inicio para ver las preguntas
 };
 
 window.prevSection = function () {
     document.getElementById('section-2').classList.add('hidden');
     document.getElementById('section-1').classList.remove('hidden');
-    window.scrollTo(0, 0);
-};
-
-window.validateSection2AndNext = function () {
-    const required = QUESTIONS.flatMap(q => [`past_${q.id}`]);
-    const missing = required.filter(k => !responses[k]);
-
-    if (missing.length > 0) {
-        alert('Por favor, selecciona una valoración para todas las categorías antes de continuar.');
-        // Opcional: podrías hacer scroll al primer elemento faltante
-        return;
-    }
-
-    // Todo bien, vamos a la Sección 3 (Datos Personales)
-    document.getElementById('section-2').classList.add('hidden');
-    document.getElementById('section-3').classList.remove('hidden');
-    window.scrollTo(0, 0);
-};
-
-window.goToSection2 = function () {
-    document.getElementById('section-3').classList.add('hidden');
-    document.getElementById('section-2').classList.remove('hidden');
     window.scrollTo(0, 0);
 };
 
@@ -236,82 +162,56 @@ if (mainForm) {
         const transactionId = `tx_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         console.log(`📝 [${transactionId}] Evento submit capturado. Validando...`);
 
-        // Validar Sección 3 (Datos Personales) antes de enviar definitivamente
-        const userNameInput = document.getElementById('user-name');
-        const userSurnameInput = document.getElementById('user-surname');
-        const userProfileInput = document.getElementById('user-profile');
+        const required = QUESTIONS.flatMap(q => [`past_${q.id}`, `now_${q.id}`]);
+        const missing = required.filter(k => !responses[k]);
 
-        const userName = userNameInput ? userNameInput.value.trim() : "";
-        const userSurname = userSurnameInput ? userSurnameInput.value.trim() : "";
-        const userProfile = userProfileInput ? userProfileInput.value : "";
-
-        if (!userName) {
-            alert('Por favor, escribe tu nombre.');
-            userNameInput.focus();
-            return;
-        }
-        if (!userSurname) {
-            alert('Por favor, escribe tus apellidos.');
-            userSurnameInput.focus();
-            return;
-        }
-        if (!userProfile) {
-            alert('Por favor, selecciona tu género.');
-            userProfileInput.focus();
+        if (missing.length > 0) {
+            alert('Por favor, selecciona una opción para todas las categorías antes de enviar.');
             return;
         }
 
         const btn = document.getElementById('submit-btn');
+        const userNameInput = document.getElementById('user-name');
+        const userName = userNameInput ? userNameInput.value.trim() : "Anónimo";
+
+        const userProfileInput = document.getElementById('user-profile');
+        const userProfile = userProfileInput ? userProfileInput.value : "";
+
+        // Capturar tiempo de uso de IA
+        const timeUsingAiInput = document.querySelector('input[name="time_using_ai"]:checked');
+        const timeUsingAi = timeUsingAiInput ? timeUsingAiInput.value : "";
+
+        // Capturar frecuencia uso IA
+        const freqUsingAiInput = document.querySelector('input[name="frequency_using_ai"]:checked');
+        const freqUsingAi = freqUsingAiInput ? freqUsingAiInput.value : "";
+
+        if (!userName && userNameInput) {
+            alert('Por favor, introduce tu nombre.');
+            return;
+        }
+
         // DESACTIVAR INMEDIATAMENTE el botón y marcar como enviando
         isSubmitting = true;
         btn.disabled = true;
         btn.innerHTML = '<span>Guardando...</span>';
         console.log(`🔒 [${transactionId}] Botón desactivado y flag isSubmitting = true`);
 
-        // Recolectar datos de las secciones anteriores
-        const timeUsingAiInput = document.querySelector('input[name="time_using_ai"]:checked');
-        const timeUsingAi = timeUsingAiInput ? timeUsingAiInput.value : "";
-
-        const freqUsingAiInput = document.querySelector('input[name="frequency_using_ai"]:checked');
-        const freqUsingAi = freqUsingAiInput ? freqUsingAiInput.value : "";
-
-        const aiUsageNodes = document.querySelectorAll('input[name="ai_usage"]:checked');
-        const aiUsage = Array.from(aiUsageNodes).map(n => n.value).join(', ');
-
-        // Construir payload en el ORDEN EXACTO del cuestionario
+        // Construir payload
         const payload = {
             "Fecha": new Date().toLocaleString(),
-            "Nombre": userName,
-            "Apellidos": userSurname,
-            "Género": userProfile,
-            "¿Cuánto tiempo llevas utilizando la IAG?": timeUsingAi,
-            "¿Con qué frecuencia usas la IAG?": freqUsingAi
+            "Usuario": userName,
+            "Perfil": userProfile,
+            "Tiempo Uso IAG": timeUsingAi,
+            "Frecuencia Uso IAG": freqUsingAi
         };
 
-        // 1. Matriz de frecuencia de herramientas (en orden)
-        const tools = ['chatgpt', 'copilot', 'gemini', 'claude', 'canva', 'gamma', 'perplexity', 'dalle', 'notebooklm'];
-        tools.forEach(tool => {
-            const val = document.querySelector(`input[name="freq_${tool}"]:checked`);
-            if (val) {
-                const toolName = tool === 'dalle' ? 'Dall-e' : tool.charAt(0).toUpperCase() + tool.slice(1);
-                payload[`Frecuencia_${toolName}`] = val.value;
-            }
-        });
-
-        // 1.1 Manejo especial para "Otras" (Campo de texto)
-        const otrasVal = document.getElementById('freq_otras')?.value;
-        if (otrasVal) {
-            payload[`Frecuencia_Otras`] = otrasVal;
-        }
-
-        // 2. ¿Para qué usas la IA? (Multiselección)
-        payload["¿Para qué usas la IA?"] = aiUsage;
-
-        // 3. Items de valoración (1-55) con nombres completos (Para Sheets y Supabase)
-        QUESTIONS.forEach((q) => {
+        QUESTIONS.forEach(q => {
             const pv = responses[`past_${q.id}`];
-            if (pv !== undefined) {
-                payload[`${q.category}`] = pv;
+            const nv = responses[`now_${q.id}`];
+            if (pv !== undefined && nv !== undefined) {
+                payload[`${q.category} (Pasado)`] = pv;
+                payload[`${q.category} (Ahora)`] = nv;
+                payload[`${q.category} (Diferencia)`] = nv - pv;
             }
         });
 
@@ -345,8 +245,7 @@ if (mainForm) {
             // PASO 3: Enviar a Google Sheets (con reintentos)
             if (webhook) {
                 btn.innerHTML = '<span>Enviando cuestionario...</span>';
-                // El webhook de Google Apps Script ahora gestiona tanto la hoja de cálculo como el envío del email con el adjunto .txt
-                console.log(`📤 [${transactionId}] Iniciando envío a Google Sheets y Backup Gmail...`);
+                console.log(`📤 [${transactionId}] Iniciando envío a Google Sheets...`);
 
                 const maxRetries = 3;
                 let retryCount = 0;
@@ -401,27 +300,11 @@ if (mainForm) {
                 const modal = document.getElementById('modal-success');
                 if (modal) modal.classList.remove('hidden');
 
-                // Limpieza profunda de persistencia
+                // Limpieza
                 localStorage.removeItem('survey_responses');
                 responses = {};
-
-                // Eliminar todos los inputs guardados de la Sección 1
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('input_')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-
-                // Limpiar UI
                 if (userNameInput) userNameInput.value = "";
-                if (userSurnameInput) userSurnameInput.value = "";
-                const otrasInput = document.getElementById('freq_otras');
-                if (otrasInput) otrasInput.value = "";
-
-                const userProfileSelect = document.getElementById('user-profile');
-                if (userProfileSelect) userProfileSelect.selectedIndex = 0;
-
-                document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(r => r.checked = false);
+                document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
 
                 // RESETEAR FLAG para permitir nuevos envíos
                 isSubmitting = false;
