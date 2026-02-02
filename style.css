@@ -1,40 +1,9 @@
 /* Google Fonts - Outfit */
-/* Disclaimer de la Sección 1 */
-.section-disclaimer {
-    text-align: center;
-    margin-bottom: 2rem;
-    padding: 1.25rem;
-    background: #f0f7ff;
-    border-radius: 16px;
-    border: 1px dashed var(--accent);
-    color: var(--text-primary);
-    font-size: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    animation: fadeInDown 0.8s ease-out;
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 :root {
     --bg-main: #f8fafc;
     --bg-card: #ffffff;
-    --accent: #5b67f1;
-    /* Azul vibrante de la imagen */
-    --accent-light: rgba(91, 103, 241, 0.15);
-    --accent-shadow: rgba(91, 103, 241, 0.4);
+    --accent: #5a67d8;
+    --accent-light: rgba(90, 103, 216, 0.1);
     --text-primary: #000000;
     --text-secondary: #000000;
     --text-muted: #000000;
@@ -171,13 +140,14 @@ body {
 }
 
 .user-info-section label {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-secondary);
-    font-size: 1rem;
-    text-transform: none;
-    letter-spacing: normal;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     white-space: nowrap;
     min-width: 100px;
+    /* Ensure labels align nicely */
 }
 
 .user-info-section input,
@@ -221,15 +191,11 @@ body {
 }
 
 .form-group-vertical label.question-label {
-    font-weight: 700;
-    /* Negrita más intensa como en la imagen */
+    font-weight: 600;
     color: var(--text-primary);
-    font-size: 1.15rem;
-    /* Tamaño ligeramente superior para jerarquía */
-    margin-bottom: 1.25rem;
-    /* Espacio respirable antes de las opciones */
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
     display: block;
-    text-align: justify;
 }
 
 .radio-list {
@@ -239,351 +205,89 @@ body {
 }
 
 .radio-option-item {
-    font-weight: 400 !important;
     display: inline-flex;
+    /* Cambiado a inline-flex o flex con width auto */
     width: fit-content;
+    /* NO ocupar todo el ancho */
     align-items: center;
     gap: 1rem;
     cursor: pointer;
+    font-size: 1rem;
     line-height: normal;
-    color: var(--text-primary);
-    text-align: left;
+    color: var(--text-secondary);
     justify-content: flex-start;
-}
-
-.radio-option-item input[type="radio"],
-.radio-option-item input[type="checkbox"] {
-    display: grid;
-    place-content: center;
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    min-height: 32px;
-    margin: 0;
-    border: 2px solid #5f6368;
-    border-radius: 50%;
-    background-color: #fff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    position: relative;
+    text-align: left;
+    /* Forzar texto a la izquierda */
 }
 
 .radio-option-item input[type="radio"] {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    min-height: 32px;
+    appearance: none;
+    display: grid;
+    place-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    /* BLINDAJE ANTI-OVALADO */
+    min-height: 36px;
+    border: 2px solid rgb(95, 99, 104);
     border-radius: 50%;
-    /* Círculo perfecto */
-}
-
-.radio-option-item input[type="checkbox"] {
-    width: 38px;
-    /* Un poco más grande como se solicitó */
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
-    border-radius: 8px;
-    /* Cuadrado con esquinas redondeadas */
-}
-
-.radio-option-item input[type="radio"]:checked,
-.radio-option-item input[type="checkbox"]:checked {
-    border-color: var(--accent);
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    /* BLINDAJE ANTI-APLASTAMIENTO */
+    position: relative;
+    cursor: pointer;
     background: white;
-    /* Fondo blanco */
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px var(--accent-shadow);
+    transition: all 0.2s ease;
 }
 
-.radio-option-item input[type="radio"]:checked::after,
-.radio-option-item input[type="checkbox"]:checked::after {
-    content: "";
-    width: 20px;
-    /* Punto azul más grande y protagónico */
-    height: 20px;
-    /* Punto azul */
-    border-radius: 50%;
+.radio-option-item input[type="radio"]:checked {
+    border-color: var(--accent);
+    background: var(--accent);
+    /* Fondo relleno al seleccionar, estilo Likert */
+    box-shadow: 0 4px 12px rgba(90, 103, 216, 0.3);
 }
 
 .radio-option-item input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 12px;
     height: 12px;
-    border-radius: 50%;
-}
-
-.radio-option-item input[type="checkbox"]:checked::after {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-}
-
-
-/* Frequency Matrix (AI Tools) */
-.matrix-question-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
-    text-align: justify
-}
-
-.frequency-matrix {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
     background: white;
-}
-
-.freq-header {
-    display: grid;
-    grid-template-columns: 2fr repeat(4, 1fr);
-    background: #f8fafc;
-    border-bottom: 2px solid var(--border);
-    padding: 0;
-}
-
-.freq-header div {
-    padding: 1rem;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    text-align: center;
-}
-
-.freq-header .cell-tool {
-    text-align: left;
-}
-
-.freq-row {
-    display: grid;
-    grid-template-columns: 2fr 4fr;
-    border-bottom: 1px solid var(--border);
-}
-
-.freq-row:last-child {
-    border-bottom: none;
-}
-
-.cell-label {
-    padding: 1rem 1.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    background: #fbfcfd;
-}
-
-.options-group {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.input-otras {
-    width: 100%;
-    grid-column: span 4;
-    /* Ocupa las 4 columnas de la matriz */
-    padding: 1rem 1.25rem;
-    /* Un poco más de altura */
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    background-color: #fcfdfe;
-    transition: all 0.3s ease;
-    outline: none;
-    margin: 5px 0;
-}
-
-.input-otras:focus {
-    border-color: var(--accent);
-    background-color: #fff;
-    box-shadow: 0 0 0 4px var(--accent-light);
-}
-
-.input-otras::placeholder {
-    color: #94a3b8;
-}
-
-.cell-option-mobile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.cell-option-mobile:hover {
-    background: #f1f5f9;
-}
-
-.cell-option-mobile input[type="radio"] {
-    display: grid;
-    place-content: center;
-    width: 32px;
-    /* Tamaño optimizado para fidelidad visual */
-    height: 32px;
-    min-width: 32px;
-    /* Blindaje contra distorsión */
-    min-height: 32px;
-    margin: 0;
-    border: 2px solid #5f6368;
-    /* Color gris de la imagen */
+    /* Punto blanco interno */
     border-radius: 50%;
-    /* Círculo perfecto */
-    background-color: #fff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    /* Evita que se aplaste */
-    position: relative;
 }
 
-.cell-option-mobile input[type="radio"]:checked {
-    transform: scale(1.1);
-}
 
-.cell-option-mobile input[type="radio"]:checked::after {
-    width: 6px;
-    height: 6px;
-}
-
-.opt-text {
-    display: none;
-    /* Oculto en desktop */
-}
-
-@media (max-width: 768px) {
-    .freq-header {
-        display: none;
-    }
-
-    .freq-row {
-        grid-template-columns: 1fr;
-        border-bottom: none;
-        margin-bottom: 1rem;
-    }
-
-    .cell-label {
-        background: #f1f5f9;
-        /* Color de fondo sutil para el encabezado de herramienta */
-        padding: 0.85rem 1.25rem;
-        font-size: 1.25rem;
-        font-weight: 800;
-        color: var(--text-primary);
-        border-bottom: 1px solid var(--border);
-        border-radius: 12px 12px 0 0;
-    }
-
-    .options-group {
-        grid-template-columns: 1fr;
-        padding: 0;
-        background: white;
-        border: 1px solid var(--border);
-        border-top: none;
-        border-radius: 0 0 12px 12px;
-        margin-bottom: 12px;
-        justify-content: flext-start;
-        display: flex;
-        align-items: flex-start;
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .cell-option-mobile {
-        justify-content: flex-start;
-        gap: 1.25rem;
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .cell-option-mobile:last-child {
-        border-bottom: none;
-    }
-
-    .opt-text {
-        display: inline;
-        font-size: 1.1rem;
-        font-weight: 500;
-        color: #000000;
-    }
-
-    /* Estilo del radio button para móvil coincidente con la imagen */
-    .cell-option-mobile input[type="radio"] {
-        width: 38px;
-        height: 38px;
-        border: 1px solid #70757a;
-    }
-
-    .cell-option-mobile input[type="radio"]:checked {
-        border-color: var(--accent);
-    }
-
-    .cell-option-mobile input[type="radio"]:checked::after {
-        width: 22px;
-        height: 22px;
-        background-color: var(--accent);
-    }
-}
-
+/* Matrix Table */
 .matrix-header-sticky,
 .matrix-row {
+
     display: grid;
-    grid-template-columns: 2fr 1.5fr;
+    grid-template-columns: 2fr 1.5fr 1.5fr;
     align-items: center;
     padding: 20px;
     background: white;
     border-radius: 18px 18px 0 0;
     border: 1px solid var(--border);
     border-bottom: 3px solid var(--accent);
-    text-align: left;
-    /* Alineación a la izquierda para encabezados */
-}
-
-/* Contenedor para agrupar elementos pegajosos (Desktop y Móvil) */
-.mobile-sticky-block {
-    position: sticky;
-    top: 73px;
-    /* Justo debajo del header principal en Desktop */
-    z-index: 100;
-    background: white;
-    /* Color sólido para evitar transparencias al hacer scroll */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    border-radius: 18px 18px 0 0;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    border-bottom: none;
-}
-
-/* Recordatorio pegajoso */
-.sticky-reminder {
-    background: white;
-    padding: 15px 25px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #000;
-    border-bottom: 1px solid var(--border);
     text-align: center;
+    /* Alineación centrada para encabezados en PC/Tablet */
 }
 
-/* Encabezado de la matriz */
+/* Línea azul de la imagen */
 .matrix-header-sticky {
     font-weight: 700;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #000000;
-    background: white;
-    /* Los bordes y padding se heredan de la definición compartida de .matrix-header-sticky */
-    border: none !important;
-    /* Quitamos bordes individuales para no duplicar con el contenedor */
-    border-bottom: 3px solid var(--accent) !important;
-    border-radius: 0 !important;
+    position: sticky;
+    top: 73px;
+    z-index: 90;
 }
 
 /* Alineación de los grupos de radio buttons */
@@ -645,7 +349,7 @@ body {
 
 .question-row {
     display: grid;
-    grid-template-columns: 2fr 1.5fr;
+    grid-template-columns: 2fr 1.5fr 1.5fr;
     align-items: center;
     padding: 2.5rem 2.5rem;
     border: 1px solid var(--border);
@@ -658,17 +362,18 @@ body {
 }
 
 .question-text {
-    text-align: left;
+    text-align: justify;
     padding-right: 1.5rem;
+    /* Añadir un poco de espacio para que la justificación no pegue con la siguiente columna */
 }
 
 .category-title {
     display: block;
     font-size: 1.1rem;
     /* Reducido de 1.3rem */
+    font-weight: 600;
     color: #000000;
     margin-bottom: 0.5rem;
-    text-align: justify;
 }
 
 .question-subtext {
@@ -707,7 +412,7 @@ body {
 
 .likert-label {
     font-size: 0.9rem;
-    font-weight: 400;
+    font-weight: 500;
     color: var(--text-muted);
 }
 
@@ -726,19 +431,16 @@ body {
 /* Checked State */
 .likert-option input:checked+.likert-circle {
     border-color: var(--accent);
-    background: white;
-    /* Fondo blanco */
+    background: var(--accent);
     transform: scale(1.1);
-    box-shadow: 0 4px 12px var(--accent-shadow);
+    box-shadow: 0 4px 12px rgba(90, 103, 216, 0.3);
 }
 
 .likert-option input:checked+.likert-circle::after {
-    content: "";
-    width: 20px;
-    /* Punto azul más grande y protagónico */
-    height: 20px;
-    background: var(--accent);
-    /* Punto azul */
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: white;
     border-radius: 50%;
 }
 
@@ -913,55 +615,38 @@ body {
     /* Ajuste radical de la grilla para móvil */
     .matrix-header-sticky,
     .question-row {
-        grid-template-columns: 1fr 170px;
-        /* Pregunta | Pasado (Ampliado para círculos más grandes) */
+        grid-template-columns: 1fr 120px 120px;
+        /* Pregunta | Pasado | Ahora */
         gap: 0.5rem;
         padding: 1rem 0.5rem;
     }
 
-    /* Cabecera fija móvil REFINADA */
-    .mobile-sticky-block {
-        top: 0;
-        /* Al inicio de la pantalla en móvil */
-        z-index: 120;
-    }
-
-    .sticky-reminder {
-        position: relative;
-        /* Ya no es sticky individual */
-        top: auto;
-        font-size: 0.85rem;
-        padding: 12px 15px;
-        background: white;
-        border-bottom: 1px solid var(--border);
-        color: #000
-    }
-
+    /* Cabecera fija móvil */
     .matrix-header-sticky {
-        position: relative;
-        /* Ya no es sticky individual */
-        top: auto;
         display: grid;
+        top: 60px;
         font-size: 0.7rem;
         padding: 10px 5px;
+        z-index: 95;
         border-radius: 0;
         text-align: center;
-        background: white;
-        border-top: none;
+        /* Centrar todo por defecto */
     }
 
     .col-category {
         display: flex;
-        justify-content: flex-start !important;
-        /* Forzar alineación a la izquierda */
+        justify-content: center !important;
+        /* Forzar centrado */
         align-items: center;
-        text-align: left !important;
-        padding-left: 0.5rem;
+        text-align: center !important;
+        padding-left: 0;
         width: 100%;
+        /* Ocupar todo el espacio de la celda */
     }
 
-    /* Asegurar que Pasado esté centrado */
-    .col-past {
+    /* Asegurar que Pasado y Ahora estén centrados */
+    .col-past,
+    .col-now {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -986,32 +671,32 @@ body {
         font-size: 0.8rem;
     }
 
-    /* Compactar escalas Likert - Ahora con círculos grandes y cómodos */
+    /* Compactar escalas Likert */
     .likert-group {
         padding: 0;
-        gap: 4px;
+        gap: 2px;
     }
 
     .likert-circle {
-        width: 30px;
-        /* Círculos más grandes para táctil */
-        height: 30px;
-        border-width: 1.5px;
+        width: 20px;
+        /* Círculos mucho más pequeños */
+        height: 20px;
+        border-width: 1px;
     }
 
     .likert-label {
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.7rem;
+        /* Números pequeños */
     }
 
     /* Estado seleccionado ajustado */
     .likert-option input:checked+.likert-circle {
-        transform: scale(1.05);
+        transform: scale(1.1);
     }
 
     .likert-option input:checked+.likert-circle::after {
-        width: 16px;
-        height: 16px;
+        width: 6px;
+        height: 6px;
     }
 
     /* Ocultar elementos decorativos en móvil */
@@ -1022,12 +707,8 @@ body {
     .app-header {
         padding: 0.5rem 0;
         position: relative;
-        /* YA NO ES STICKY EN MÓVIL PARA AHORRAR ESPACIO */
+        /* YA NO ES STICKY EN MÓVIL */
         top: auto;
-        height: auto;
-        min-height: 50px;
-        display: flex;
-        align-items: center;
     }
 
     .user-info-section {
@@ -1042,12 +723,6 @@ body {
         gap: 0.5rem;
     }
 
-    .user-info-section label,
-    .question-label {
-        white-space: normal !important;
-        text-align: justify
-    }
-
     /* Reducir radios en móvil para coincidir con Likert */
     .radio-option-item input[type="radio"] {
         width: 20px;
@@ -1055,19 +730,78 @@ body {
         border-width: 1px;
     }
 
+    /* Separador vertical entre Pasado y Ahora */
     /* Ajuste radical de la grilla para móvil */
     .matrix-header-sticky,
     .question-row {
-        grid-template-columns: 1fr 140px;
-        /* Pregunta | Pasado */
-        grid-gap: 12px;
-        align-items: center;
+        /* Aumentamos el gap entre las columnas de Pasado y Ahora */
+        grid-template-columns: 1fr 120px 10px 120px;
+        /* Pregunta | Pasado | Separador | Ahora */
+        gap: 0;
+        padding: 1rem 0.5rem;
     }
 
+    /* Cabecera fija móvil */
+    .matrix-header-sticky {
+        display: grid;
+        top: 0;
+        /* AHORA SE PEGA ARRIBA DEL TODO AL HACER SCROLL */
+        font-size: 0.7rem;
+        padding: 10px 5px;
+        z-index: 95;
+        border-radius: 0;
+        text-align: center;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        /* Añadir sombra para que se note sobre el contenido */
+    }
+
+    .col-past {
+        text-align: center;
+        /* Asegurar texto centrado */
+        justify-content: center;
+        display: flex;
+    }
+
+    /* El separador ahora es su propia "columna" virtual en el grid de 4 cols
+       Pero como no podemos cambiar el HTML fácilmente, usamos pseudo-elemento o border en el elemento correcto.
+       
+       Mejor estrategia: Volver a 3 columnas pero usar Margin/Padding inteligente.
+    */
+    .matrix-header-sticky,
+    .question-row {
+        grid-template-columns: 1fr 125px 125px;
+        grid-gap: 12px;
+        /* Aumentamos gap para separar Pregunta de Pasado */
+        align-items: center;
+        /* Alineación vertical CENTRADA para los círculos */
+    }
+
+    /* Separador vertical perfectamente centrado */
     .side-past,
     .col-past {
+        border-right: 2px solid #cbd5e1;
+        padding-right: 24px;
+        margin-right: 0;
         display: flex;
         justify-content: center;
+        width: 100%;
+    }
+
+    /* Alineación de CÍRCULOS (side-now) a la izquierda */
+    .side-now {
+        display: flex;
+        justify-content: flex-start;
+        /* Círculos a la izquierda */
+        padding-left: 2px;
+        width: 100%;
+    }
+
+    /* Alineación del TÍTULO (col-now) al centro */
+    .col-now {
+        display: flex;
+        justify-content: center !important;
+        /* Texto AHORA centrado */
+        padding-left: 0;
         width: 100%;
     }
 }
@@ -1077,59 +811,12 @@ body {
 
     .matrix-header-sticky,
     .question-row {
-        grid-template-columns: 1fr 120px;
+        grid-template-columns: 1fr 100px 100px;
         /* Aún más compacto */
     }
 
     .likert-circle {
         width: 16px;
         height: 16px;
-    }
-}
-
-/* Ajuste de botones para que quepan en una línea en móvil */
-@media (max-width: 768px) {
-    .form-actions {
-        flex-direction: row !important;
-        /* Asegurar fila */
-        flex-wrap: nowrap !important;
-        /* No permitir salto */
-        gap: 0.5rem;
-        margin-top: 2rem;
-        padding: 0 0.5rem;
-    }
-
-    .form-actions .btn {
-        padding: 0.75rem 0.25rem;
-        justify-content: center;
-        min-width: 0;
-    }
-
-    /* Botón Volver más pequeño */
-    .form-actions .btn-secondary {
-        flex: 1;
-        /* Menos ancho */
-        font-size: 0.75rem;
-    }
-
-    /* Botón Enviar más grande */
-    .form-actions .btn-primary {
-        flex: 2;
-        /* Más ancho */
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .form-actions .btn i {
-        display: none;
-        /* Opcional: ocultar iconos si falta espacio, o reducirlos. Mejor reducirlos. */
-    }
-
-    /* Mostrar iconos pero pequeños */
-    .form-actions .btn i {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        margin: 0 2px;
     }
 }
