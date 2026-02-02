@@ -110,34 +110,12 @@
 
                 <form id="matrix-form">
                     <div id="section-1" class="user-info-section">
-                        <!-- Tarjeta 1: Nombre -->
-                        <div class="info-card">
-                            <div class="form-group">
-                                <label for="user-name">Nombre</label>
-                                <input type="text" id="user-name" placeholder="Escribe tu nombre..." required>
-                            </div>
+                        <div class="section-disclaimer"
+                            style="text-align: center; margin-bottom: 1.5rem; padding: 1rem; background: #eef2f7; border-radius: 12px; border: 1px solid #d1d9e6; color: var(--text-secondary); font-size: 0.95rem; font-weight: 500;">
+                            <i data-lucide="info"
+                                style="width: 18px; height: 18px; vertical-align: middle; margin-right: 8px; color: var(--accent);"></i>
+                            <strong>IAG SIGNIFICA INTELIGENCIA ARTIFICIAL GENERATIVA</strong>
                         </div>
-
-                        <!-- Tarjeta: Apellidos -->
-                        <div class="info-card">
-                            <div class="form-group">
-                                <label for="user-surname">Apellidos</label>
-                                <input type="text" id="user-surname" placeholder="Escribe tus apellidos..." required>
-                            </div>
-                        </div>
-
-                        <!-- Tarjeta 2: Género -->
-                        <div class="info-card">
-                            <div class="form-group">
-                                <label for="user-profile">Género</label>
-                                <select id="user-profile">
-                                    <option value="" disabled selected>-- Selecciona una opción --</option>
-                                    <option value="Hombre">Hombre</option>
-                                    <option value="Mujer">Mujer</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <!-- Tarjeta 3: Tiempo usando IAG -->
                         <div class="info-card">
                             <div class="form-group-vertical">
@@ -495,12 +473,59 @@
                             <button type="button" class="btn btn-secondary btn-xl" onclick="prevSection()">
                                 <i data-lucide="arrow-left"></i> <span>Volver</span>
                             </button>
+                            <button type="button" class="btn btn-primary btn-xl" onclick="validateSection2AndNext()">
+                                <span>Siguiente</span>
+                                <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+                    </div> <!-- Fin Section 2 -->
+
+                    <div id="section-3" class="hidden fade-in user-info-section">
+                        <div class="section-header-instructions" style="margin-bottom: 2rem; text-align: center;">
+                            <h2 style="font-size: 1.8rem; color: var(--accent); margin-bottom: 0.5rem;">Información
+                                Personal</h2>
+                            <p style="color: var(--text-secondary);">Para finalizar, por favor completa tus datos
+                                básicos.</p>
+                        </div>
+
+                        <!-- Tarjeta 1: Nombre (Movida de S1) -->
+                        <div class="info-card">
+                            <div class="form-group">
+                                <label for="user-name">Nombre</label>
+                                <input type="text" id="user-name" placeholder="Escribe tu nombre..." required>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta: Apellidos (Movida de S1) -->
+                        <div class="info-card">
+                            <div class="form-group">
+                                <label for="user-surname">Apellidos</label>
+                                <input type="text" id="user-surname" placeholder="Escribe tus apellidos..." required>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta 2: Género (Movida de S1) -->
+                        <div class="info-card">
+                            <div class="form-group">
+                                <label for="user-profile">Género</label>
+                                <select id="user-profile">
+                                    <option value="" disabled selected>-- Selecciona una opción --</option>
+                                    <option value="Hombre">Hombre</option>
+                                    <option value="Mujer">Mujer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary btn-xl" onclick="goToSection2()">
+                                <i data-lucide="arrow-left"></i> <span>Volver</span>
+                            </button>
                             <button type="submit" id="submit-btn" class="btn btn-primary btn-xl">
                                 <span>Enviar Cuestionario</span>
                                 <i data-lucide="send" class="icon-right"></i>
                             </button>
                         </div>
-                    </div> <!-- Fin Section 2 -->
+                    </div> <!-- Fin Section 3 -->
                 </form>
             </section>
         </main>
