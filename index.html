@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuestionario de IAG</title>
-    <meta name="description" content="Cuestionario de evaluación de uso de IA">
+    <title>Prueba Cuestionario</title>
+    <meta name="description" content="Cuestionario de evaluación comparativa: Ahora vs Pasado">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -18,64 +18,24 @@
 
     <!-- CONFIGURACIÓN DE PREGUNTAS Y DESTINO (Accesible directamente en el HTML) -->
     <script id="data-config">
-        const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw3fCYcOT2BMii7EHhBtghCI-8YY9QUIylfFnkYfCpqoLqlt5E1m7tX9uqWwzBBZ_gz/exec";
+        const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxTPy61QLTKF225RGLjq_AkcPLuyIaeFJ8iJUJ1aqcFK3ihQDf6d5uCuEnaPp5ws8Un/exec";
 
         const DEFAULT_QUESTIONS = [
-            { id: "q_item1", category: "1. Considero que aprender habilidades relacionadas con IA mejora mi desarrollo personal." },
-            { id: "q_item2", category: "2. Me resulta muy interesante el proceso de aprender habilidades de IA." },
-            { id: "q_item3", category: "3. Creo que aprender habilidades de IA enriquece mis competencias." },
-            { id: "q_item4", category: "4. Considero desafiante el proceso de aprender habilidades de IA." },
-            { id: "q_item5", category: "5. Pienso que aprender habilidades de IA me reportará muchos beneficios." },
-            { id: "q_item6", category: "6. Aprender habilidades de IA me ayuda a desarrollar mi potencial." },
-            { id: "q_item7", category: "7. Aprender habilidades de IA contribuye a mi crecimiento personal." },
-            { id: "q_item8", category: "8. Aprender habilidades de IA puede aumentar mi ventaja para encontrar empleo." },
-            { id: "q_item9", category: "9. Aprender habilidades de IA puede ayudarme a conservar mi empleo en el futuro." },
-            { id: "q_item10", category: "10. Aprender habilidades de IA puede ayudarme a lograr un salario más alto." },
-            { id: "q_item11", category: "11. Tras aprender habilidades de IA, mis opiniones recibirán más atención en el equipo." },
-            { id: "q_item12", category: "12. Aprender habilidades de IA mejora la opinión que otros tienen de mí." },
-            { id: "q_item13", category: "13. Mi desempeño sobresaliente en el aprendizaje de habilidades de IA será reconocido." },
-            { id: "q_item14", category: "14. En general, aprender habilidades de IA es muy útil para alcanzar mis metas." },
-            { id: "q_item15", category: "15. Me considero capaz de desempeñar tareas relacionadas con la inteligencia artificial." },
-            { id: "q_item16", category: "16. Me veo capaz de ejecutar con éxito proyectos relacionados con la inteligencia artificial." },
-            { id: "q_item17", category: "17. Me percibo capaz de dominar los conocimientos y habilidades relacionados con la inteligencia artificial." },
-            { id: "q_item18", category: "18. Me considero capaz de obtener buenos resultados en evaluaciones relacionadas con la inteligencia artificial." },
-            { id: "q_item19", category: "19. Establezco criterios de calidad para mis tareas de aprendizaje." },
-            { id: "q_item20", category: "20. Mantengo un alto nivel de exigencia en mi aprendizaje." },
-            { id: "q_item21", category: "21. Fijo metas que me ayudan a gestionar el tiempo de estudio." },
-            { id: "q_item22", category: "22. Replanteo la pregunta a la IA generativa cuando no responde adecuadamente a la inicial." },
-            { id: "q_item23", category: "23. Ajusto el contenido generado por la IA generativa cuando no resulta satisfactorio." },
-            { id: "q_item24", category: "24. Adapto el momento y la forma de uso de la IA generativa según la dificultad del contenido." },
-            { id: "q_item25", category: "25. Reviso el diálogo con la IA generativa y reflexiono sobre la calidad de la interacción." },
-            { id: "q_item26", category: "26. Reflexiono sobre lo que hice bien y lo que no durante el proceso de aprendizaje." },
-            { id: "q_item27", category: "27. Reflexiono sobre mis conductas de aprendizaje para ver si podría haber hecho algo mejor." },
-            { id: "q_item28", category: "28. Repaso lo que he aprendido con la IA generativa y lo re evalúo." },
-            { id: "q_item29", category: "29. Selecciono la estrategia de prompt para interactuar con la IA generativa según mi propio criterio." },
-            { id: "q_item30", category: "30. Decido qué preguntas formular a la IA según mi criterio." },
-            { id: "q_item31", category: "31. Determino cuándo interactuar con la IA según mi criterio." },
-            { id: "q_item32", category: "32. Elijo la forma de completar las tareas de aprendizaje según mi criterio." },
-            { id: "q_item33", category: "33. Evito el uso indebido de la IA generativa." },
-            { id: "q_item34", category: "34. Asumo activamente la responsabilidad de mi aprendizaje y no dejo que la IA reemplace mi esfuerzo." },
-            { id: "q_item35", category: "35. Soy cuidadoso/a con temas de seguridad y privacidad de la información." },
-            { id: "q_item36", category: "36. Mantengo valores correctos y permanezco alerta ante cuestiones éticas como sesgos raciales y discriminación de género." },
-            { id: "q_item37", category: "37. Introduzco prompts detallados en herramientas de IA generativa para acceder al contenido que necesito." },
-            { id: "q_item38", category: "38. Mejoro prompts que utilizo en herramientas de IA generativa para alcanzar el contenido que necesito." },
-            { id: "q_item39", category: "39. Detecto deficiencias en mis prompts a partir del contenido generado por la IA generativa." },
-            { id: "q_item40", category: "40. Creo prompts que hacen que el contenido generado por la IA generativa sea más significativo." },
-            { id: "q_item41", category: "41. Adapto prompts a distintas herramientas de IA generativa para obtener el contenido que necesito." },
-            { id: "q_item42", category: "42. Evalúo los riesgos importantes que puede suponer para las personas el uso indebido de la inteligencia artificial." },
-            { id: "q_item43", category: "43. Someto los sistemas de inteligencia artificial a pruebas rigurosas para garantizar su correcto funcionamiento." },
-            { id: "q_item44", category: "44. Asumo la responsabilidad de considerar el diseño y los procesos de decisión de la inteligencia artificial en su uso." },
-            { id: "q_item45", category: "45. Garantizo que los sistemas de inteligencia artificial beneficien a todas las personas, independientemente de sus condiciones físicas o de género." },
-            { id: "q_item46", category: "46. Exijo la rendición de cuentas por el uso que se hace de los sistemas de inteligencia artificial." },
-            { id: "q_item47", category: "47. Verifico que los sistemas de inteligencia artificial cumplen los estándares éticos y legales." },
-            { id: "q_item48", category: "48. Aplico la inteligencia artificial para apoyar a personas desfavorecidas." },
-            { id: "q_item49", category: "49. Cuestiono el contenido generado por la IA generativa." },
-            { id: "q_item50", category: "50. Analizo la precisión del contenido presentado por la IA generativa." },
-            { id: "q_item51", category: "51. Infiero conclusiones lógicas sobre los sesgos presentes en el contenido generado por la IA generativa." },
-            { id: "q_item52", category: "52. Contrasto el contenido presentado por la IA generativa con otras fuentes para evaluar su exactitud." },
-            { id: "q_item53", category: "53. Evalúo la objetividad del contenido presentado por la IA generativa mediante la consulta de otras fuentes." },
-            { id: "q_item54", category: "54. Distingo si el contenido presentado por la IA generativa corresponde a conocimiento científico o a una opinión subjetiva." },
-            { id: "q_item55", category: "55. Verifico la precisión del contenido generado por la IA generativa antes de utilizarlo." },
+            { id: "q_item1", category: "Ítem 1" },
+            { id: "q_item2", category: "Ítem 2" },
+            { id: "q_item3", category: "Ítem 3" },
+            { id: "q_item4", category: "Ítem 4" },
+            { id: "q_item5", category: "Ítem 5" },
+            { id: "q_item6", category: "Ítem 6" },
+            { id: "q_item7", category: "Ítem 7" },
+            { id: "q_item8", category: "Ítem 8" },
+            { id: "q_item9", category: "Ítem 9" },
+            { id: "q_item10", category: "Ítem 10" },
+            { id: "q_item11", category: "Ítem 11" },
+            { id: "q_item12", category: "Ítem 12" },
+            { id: "q_item13", category: "Ítem 13" },
+            { id: "q_item14", category: "Ítem 14" },
+            { id: "q_item15", category: "Ítem 15" },
         ];
     </script>
 
@@ -105,300 +65,108 @@
             <!-- Cuestionario Principal -->
             <section id="questionnaire" class="questionnaire-section fade-in">
                 <div class="survey-intro">
-                    <h1>Cuestionario sobre el uso de la inteligencia artificial</h1>
+                    <h1>Prueba Cuestionario</h1>
+                    <p>Reflexione sobre su situación en cada categoría comparando su estado en el <b>Pasado</b> con su
+                        estado <b>Ahora</b>.</p>
                 </div>
 
                 <form id="matrix-form">
                     <div id="section-1" class="user-info-section">
-                        <div class="section-disclaimer"
-                            style="text-align: center; margin-bottom: 1.5rem; padding: 1rem; background: #eef2f7; border-radius: 12px; border: 1px solid #d1d9e6; color: var(--text-secondary); font-size: 0.95rem; font-weight: 500;">
-                            <i data-lucide="info"
-                                style="width: 18px; height: 18px; vertical-align: middle; margin-right: 8px; color: var(--accent);"></i>
-                            <strong>IAG SIGNIFICA INTELIGENCIA ARTIFICIAL GENERATIVA</strong>
+                        <!-- Tarjeta 1: Nombre -->
+                        <div class="info-card">
+                            <div class="form-group">
+                                <label for="user-name">Nombre</label>
+                                <input type="text" id="user-name" placeholder="Escribe tu nombre..." required>
+                            </div>
                         </div>
-                        <!-- Tarjeta 3: Tiempo usando IAG -->
+
+                        <!-- Tarjeta 2: Género -->
+                        <div class="info-card">
+                            <div class="form-group">
+                                <label for="user-profile">Género</label>
+                                <select id="user-profile">
+                                    <option value="" disabled selected>-- Selecciona una opción --</option>
+                                    <option value="Hombre">Hombre</option>
+                                    <option value="Mujer">Mujer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta 3: Tiempo IAG -->
                         <div class="info-card">
                             <div class="form-group-vertical">
-                                <label class="question-label">¿Cuánto tiempo llevas utilizando la IAG?</label>
+                                <label class="question-label">Pregunta 1</label>
                                 <div class="radio-list">
                                     <label class="radio-option-item">
-                                        <input type="radio" name="time_using_ai" value="Menos de 1 año.">
-                                        <span>Menos de 1 año.</span>
+                                        <input type="radio" name="time_using_ai" value="Respuesta 1">
+                                        <span>Respuesta 1</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="radio" name="time_using_ai" value="Entre 1 y 2 años.">
-                                        <span>Entre 1 y 2 años.</span>
+                                        <input type="radio" name="time_using_ai" value="Respuesta 2">
+                                        <span>Respuesta 2</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="radio" name="time_using_ai" value="Entre 2 y 3 años.">
-                                        <span>Entre 2 y 3 años.</span>
+                                        <input type="radio" name="time_using_ai" value="Respuesta 3">
+                                        <span>Respuesta 3</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="radio" name="time_using_ai" value="Más de 3 años.">
-                                        <span>Más de 3 años.</span>
+                                        <input type="radio" name="time_using_ai" value="Respuesta 4">
+                                        <span>Respuesta 4</span>
                                     </label>
                                 </div>
                             </div>
+
                         </div>
+
                         <!-- Tarjeta 4: Frecuencia IAG -->
                         <div class="info-card">
                             <div class="form-group-vertical">
-                                <label class="question-label">¿Con qué frecuencia usas la IAG?</label>
+                                <label class="question-label">Pregunta 2</label>
                                 <div class="radio-list">
                                     <label class="radio-option-item">
-                                        <input type="radio" name="frequency_using_ai" value="Nunca.">
-                                        <span>Nunca.</span>
+                                        <input type="radio" name="frequency_using_ai" value="Respuesta 1">
+                                        <span>Respuesta 1</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="radio" name="frequency_using_ai" value="Una vez al mes.">
-                                        <span>Una vez al mes.</span>
+                                        <input type="radio" name="frequency_using_ai" value="Respuesta 2">
+                                        <span>Respuesta 2</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="radio" name="frequency_using_ai" value="Varias veces al mes.">
-                                        <span>Varias veces al mes.</span>
+                                        <input type="radio" name="frequency_using_ai" value="Respuesta 3">
+                                        <span>Respuesta 3</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="radio" name="frequency_using_ai" value="Una vez a la semana.">
-                                        <span>Una vez a la semana.</span>
-                                    </label>
-                                    <label class="radio-option-item">
-                                        <input type="radio" name="frequency_using_ai" value="Varias veces a la semana.">
-                                        <span>Varias veces a la semana.</span>
-                                    </label>
-                                    <label class="radio-option-item">
-                                        <input type="radio" name="frequency_using_ai" value="A diario.">
-                                        <span>A diario.</span>
-                                    </label>
-                                    <label class="radio-option-item">
-                                        <input type="radio" name="frequency_using_ai" value="Varias veces al día.">
-                                        <span>Varias veces al día.</span>
+                                        <input type="radio" name="frequency_using_ai" value="Respuesta 4">
+                                        <span>Respuesta 4</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Tarjeta 5: Frecuencia de herramientas IAG -->
-                        <div class="info-card">
-                            <h3 class="matrix-question-title">¿Qué herramienta/s de IAG utilizas con mayor frecuencia?
-                            </h3>
-
-                            <div class="frequency-matrix">
-                                <!-- Cabecera (Visible solo en Desktop) -->
-                                <div class="freq-header">
-                                    <div class="cell-tool">Herramienta</div>
-                                    <div class="cell-option">Nunca</div>
-                                    <div class="cell-option">Ocasionalmente</div>
-                                    <div class="cell-option">Semanalmente</div>
-                                    <div class="cell-option">Diariamente</div>
-                                </div>
-
-                                <!-- Filas -->
-                                <div class="freq-body">
-                                    <!-- Fila: ChatGPT -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">ChatGPT</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_chatgpt"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_chatgpt"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_chatgpt"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_chatgpt"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Microsoft Copilot -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Microsoft Copilot</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_copilot"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_copilot"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_copilot"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_copilot"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Google Gemini -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Google Gemini</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gemini"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gemini"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gemini"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gemini"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Claude -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Claude</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_claude"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_claude"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_claude"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_claude"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Canva -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Canva (IA)</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_canva"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_canva"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_canva"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_canva"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Gamma -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Gamma</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gamma"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gamma"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gamma"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_gamma"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Perplexity -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Perplexity</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_perplexity"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_perplexity"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_perplexity"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_perplexity"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Dall-E -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Dall-E</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_dalle"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_dalle"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_dalle"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_dalle"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: NotebookLM -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">NotebookLM</div>
-                                        <div class="options-group">
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_notebooklm"
-                                                    value="Nunca" required> <span class="opt-text">Nunca</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_notebooklm"
-                                                    value="Ocasionalmente"> <span
-                                                    class="opt-text">Ocasionalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_notebooklm"
-                                                    value="Semanalmente"> <span
-                                                    class="opt-text">Semanalmente</span></label>
-                                            <label class="cell-option-mobile"><input type="radio" name="freq_notebooklm"
-                                                    value="Diariamente"> <span
-                                                    class="opt-text">Diariamente</span></label>
-                                        </div>
-                                    </div>
-                                    <!-- Fila: Otra -->
-                                    <div class="freq-row">
-                                        <div class="cell-label">Otra</div>
-                                        <div class="options-group" style="padding: 10px 20px;">
-                                            <input type="text" id="freq_otras" name="freq_otras" class="input-otras"
-                                                placeholder="Indica otras herramientas de IAG que utilices y su frecuencia de uso">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tarjeta 6: Uso de IA -->
+                        <!-- Tarjeta 4: Pregunta 3 -->
                         <div class="info-card">
                             <div class="form-group-vertical">
-                                <label class="question-label">¿Para qué usas la IA? (Marca todas las que
-                                    apliquen)</label>
+                                <label class="question-label">Pregunta 3</label>
                                 <div class="radio-list">
                                     <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage" value="Para estudiar.">
-                                        <span>Para estudiar.</span>
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 1">
+                                        <span>Respuesta 1</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage"
-                                            value="Para hacer trabajos o tareas de la universidad.">
-                                        <span>Para hacer trabajos o tareas de la universidad.</span>
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 2">
+                                        <span>Respuesta 2</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage"
-                                            value="Para organizar viajes o actividades.">
-                                        <span>Para organizar viajes o actividades.</span>
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 3">
+                                        <span>Respuesta 3</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage" value="Para resolver dudas rápidas.">
-                                        <span>Para resolver dudas rápidas.</span>
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 4">
+                                        <span>Respuesta 4</span>
                                     </label>
                                     <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage"
-                                            value="Para crear imágenes o contenido creativo.">
-                                        <span>Para crear imágenes o contenido creativo.</span>
-                                    </label>
-                                    <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage" value="Para redactar correos o textos.">
-                                        <span>Para redactar correos o textos.</span>
-                                    </label>
-                                    <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage" value="Para aprender cosas nuevas.">
-                                        <span>Para aprender cosas nuevas.</span>
-                                    </label>
-                                    <label class="radio-option-item">
-                                        <input type="checkbox" name="ai_usage" value="Para ocio o entretenimiento.">
-                                        <span>Para ocio o entretenimiento.</span>
+                                        <input type="radio" name="cuarta_using_ai" value="Respuesta 5">
+                                        <span>Respuesta 5</span>
                                     </label>
                                 </div>
                             </div>
@@ -411,29 +179,13 @@
                             </button>
                         </div>
                     </div>
+
                     <div id="section-2" class="hidden fade-in">
-                        <div class="section-header-instructions"
-                            style="margin-bottom: 2.5rem; text-align: justify; padding: 0 1rem; font-size: 1.15rem; color: var(--text-primary); line-height: 1.6; font-weight: 400;">
-                            <p>A continuación, encontrarás una serie de afirmaciones. Indica el grado de acuerdo o
-                                desacuerdo con las siguientes afirmaciones, considerando que:</p>
 
-                            <ul>
-                                <strong>1</strong> = “Totalmente en desacuerdo”.
-                            </ul>
-                            <ul>
-                                <strong>5</strong> = “Totalmente de acuerdo”.
-                            </ul>
-                        </div>
-
-                        <div class="mobile-sticky-block">
-                            <div class="sticky-reminder">
-                                Recuerda que 1 es “Totalmente en desacuerdo” y 5 es “Totalmente de acuerdo”.
-                            </div>
-
-                            <div class="matrix-header-sticky">
-                                <div class="col-category">PREGUNTA</div>
-                                <div class="col-past">VALORACIÓN</div>
-                            </div>
+                        <div class="matrix-header-sticky">
+                            <div class="col-category">PREGUNTA</div>
+                            <div class="col-past">PASADO</div>
+                            <div class="col-now">AHORA</div>
                         </div>
 
                         <!-- ESTE CONTENEDOR ES DONDE SE RENDERIZAN LAS PREGUNTAS -->
@@ -458,6 +210,14 @@
                                                 <div class="likert-circle"></div><span class="likert-label">${i}</span>
                                             </label>`;
                                     }
+                                    html += `</div></div><div class="side-now"><div class="likert-group">`;
+                                    for (let i = 1; i <= 5; i++) {
+                                        html += `
+                                            <label class="likert-option">
+                                                <input type="radio" name="now_${id}" value="${i}" onchange="saveResponse('now_${id}', ${i})">
+                                                <div class="likert-circle"></div><span class="likert-label">${i}</span>
+                                            </label>`;
+                                    }
                                     html += `</div></div></div>`;
                                     return html;
                                 }
@@ -473,59 +233,12 @@
                             <button type="button" class="btn btn-secondary btn-xl" onclick="prevSection()">
                                 <i data-lucide="arrow-left"></i> <span>Volver</span>
                             </button>
-                            <button type="button" class="btn btn-primary btn-xl" onclick="validateSection2AndNext()">
-                                <span>Siguiente</span>
-                                <i data-lucide="arrow-right"></i>
-                            </button>
-                        </div>
-                    </div> <!-- Fin Section 2 -->
-
-                    <div id="section-3" class="hidden fade-in user-info-section">
-                        <div class="section-header-instructions" style="margin-bottom: 2rem; text-align: center;">
-                            <h2 style="font-size: 1.8rem; color: var(--accent); margin-bottom: 0.5rem;">Información
-                                Personal</h2>
-                            <p style="color: var(--text-secondary);">Para finalizar, por favor completa tus datos
-                                básicos.</p>
-                        </div>
-
-                        <!-- Tarjeta 1: Nombre (Movida de S1) -->
-                        <div class="info-card">
-                            <div class="form-group">
-                                <label for="user-name">Nombre</label>
-                                <input type="text" id="user-name" placeholder="Escribe tu nombre..." required>
-                            </div>
-                        </div>
-
-                        <!-- Tarjeta: Apellidos (Movida de S1) -->
-                        <div class="info-card">
-                            <div class="form-group">
-                                <label for="user-surname">Apellidos</label>
-                                <input type="text" id="user-surname" placeholder="Escribe tus apellidos..." required>
-                            </div>
-                        </div>
-
-                        <!-- Tarjeta 2: Género (Movida de S1) -->
-                        <div class="info-card">
-                            <div class="form-group">
-                                <label for="user-profile">Género</label>
-                                <select id="user-profile">
-                                    <option value="" disabled selected>-- Selecciona una opción --</option>
-                                    <option value="Hombre">Hombre</option>
-                                    <option value="Mujer">Mujer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary btn-xl" onclick="goToSection2()">
-                                <i data-lucide="arrow-left"></i> <span>Volver</span>
-                            </button>
                             <button type="submit" id="submit-btn" class="btn btn-primary btn-xl">
                                 <span>Enviar Cuestionario</span>
                                 <i data-lucide="send" class="icon-right"></i>
                             </button>
                         </div>
-                    </div> <!-- Fin Section 3 -->
+                    </div> <!-- Fin Section 2 -->
                 </form>
             </section>
         </main>
@@ -542,8 +255,7 @@
     </div>
 
     <script src="app.js"></script>
-    <script>if (window.lucide) lucide.createIcons();</script>
+    <script>if (window.lucidee.createIcons();</script>
 </body>
 
 </html>
-
